@@ -34,9 +34,6 @@ using System.Threading.Tasks;
  */
 namespace AutoTicket
 {
-
-
-
     /// <summary>
     /// 由于我们经常读到的是死票，所以需要切换 CDN
     /// </summary>
@@ -52,7 +49,7 @@ namespace AutoTicket
         /// 返回本地 hosts 文件中已经 ping 到的 12306 cdn
         /// </summary>
         /// <returns></returns>
-        public string GetCDN()
+        public static string GetCDN()
         {
             var newlines = lines.Select(l => l).ToList();
             newlines[i] = newlines[i].Substring(1);

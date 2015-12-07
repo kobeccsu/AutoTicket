@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.cmbstartStation = new System.Windows.Forms.ComboBox();
             this.cmbendStation = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -36,6 +37,8 @@
             this.dtpTrainDate = new System.Windows.Forms.DateTimePicker();
             this.button1 = new System.Windows.Forms.Button();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.button2 = new System.Windows.Forms.Button();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // cmbstartStation
@@ -90,9 +93,9 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(443, 72);
+            this.button1.Location = new System.Drawing.Point(542, 73);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.Size = new System.Drawing.Size(119, 23);
             this.button1.TabIndex = 6;
             this.button1.Text = "查询";
             this.button1.UseVisualStyleBackColor = true;
@@ -106,11 +109,28 @@
             this.richTextBox1.TabIndex = 7;
             this.richTextBox1.Text = "";
             // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(542, 131);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(119, 23);
+            this.button2.TabIndex = 8;
+            this.button2.Text = "选好某趟车的票";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // timer1
+            // 
+            this.timer1.Enabled = true;
+            this.timer1.Interval = 1000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // QueryTicket
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(758, 429);
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.dtpTrainDate);
@@ -120,7 +140,7 @@
             this.Controls.Add(this.cmbendStation);
             this.Controls.Add(this.cmbstartStation);
             this.Name = "QueryTicket";
-            this.Text = "QueryTicket";
+            this.Text = "查询车票";
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -136,5 +156,7 @@
         private System.Windows.Forms.DateTimePicker dtpTrainDate;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Timer timer1;
     }
 }
