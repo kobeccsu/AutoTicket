@@ -41,6 +41,8 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.label4 = new System.Windows.Forms.Label();
             this.lblCDNSite = new System.Windows.Forms.Label();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // cmbstartStation
@@ -105,7 +107,7 @@
             // 
             // richTextBox1
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(26, 204);
+            this.richTextBox1.Location = new System.Drawing.Point(26, 576);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.Size = new System.Drawing.Size(416, 96);
             this.richTextBox1.TabIndex = 7;
@@ -130,7 +132,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(24, 331);
+            this.label4.Location = new System.Drawing.Point(636, 660);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(53, 12);
             this.label4.TabIndex = 9;
@@ -144,11 +146,21 @@
             this.lblCDNSite.Size = new System.Drawing.Size(0, 12);
             this.lblCDNSite.TabIndex = 10;
             // 
+            // dataGridView1
+            // 
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(26, 140);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.RowTemplate.Height = 23;
+            this.dataGridView1.Size = new System.Drawing.Size(695, 420);
+            this.dataGridView1.TabIndex = 11;
+            // 
             // QueryTicket
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(740, 429);
+            this.ClientSize = new System.Drawing.Size(806, 681);
+            this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.lblCDNSite);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.button2);
@@ -162,6 +174,7 @@
             this.Controls.Add(this.cmbstartStation);
             this.Name = "QueryTicket";
             this.Text = "查询车票";
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -181,5 +194,6 @@
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label lblCDNSite;
+        private System.Windows.Forms.DataGridView dataGridView1;
     }
 }

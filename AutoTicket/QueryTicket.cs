@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -77,7 +78,27 @@ namespace AutoTicket
 
             var trainleftTicketInfoRes = HttpWebRequestExtension.GetWebContent(url, HttpWebRequestExtension._12306Cookies);
 
-            this.richTextBox1.Text = trainleftTicketInfoRes + cmbstartStation.SelectedValue + cmbendStation.SelectedValue;
+            RootObject obj = JsonConvert.DeserializeObject<RootObject>(trainleftTicketInfoRes);
+            DataTable dt = new DataTable();
+            QueryLeftNewDTO sample = new QueryLeftNewDTO();
+            Util.ClassToDataRow<QueryLeftNewDTO>(dt, sample);
+            dt.Columns.Add("secretStr");
+            dt.Columns.Add("buttonTextInfo");
+
+            int i = 0;
+            foreach (var item in obj.data)
+            {
+                DataRow row = dt.NewRow();
+                Util.ClassToField<QueryLeftNewDTO>(dt, row, item.queryLeftNewDTO);
+                row["secretStr"] = item.secretStr;
+                row["buttonTextInfo"] = item.buttonTextInfo;
+                dt.Rows.Add(row);
+            }
+            
+            this.dataGridView1.DataSource = dt;
+            this.dataGridView1.Refresh();
+            
+            this.richTextBox1.Text = trainleftTicketInfoRes;
         }
 
         // 刷出的列表选车次
@@ -91,5 +112,27 @@ namespace AutoTicket
         {
             //this.lblCDNSite.Text = CDNReset.GetCDN();
         }
+
+        /*
+        station_train_code
+from_station_name
+to_station_name
+start_time
+arrive_time
+lishi
+
+"yz_num": "9",  硬座
+                "rz_num": "--",  软座
+                "yw_num": "有",   硬卧
+                "rw_num": "无",   软卧
+                "gr_num": "--", 
+                "zy_num": "--", 一等座
+                "ze_num": "--", 二等座
+                "tz_num": "--", 
+                "gg_num": "--", 
+                "yb_num": "--", 
+                "wz_num": "有",   无座
+                "swz_num": "9"  商务座
+         */
     }
 }
