@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace AutoTicket
@@ -17,7 +18,7 @@ namespace AutoTicket
         private static string accept = "image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, application/x-shockwave-flash, application/x-silverlight, application/vnd.ms-excel, application/vnd.ms-powerpoint, application/msword, application/x-ms-application, application/x-ms-xbap, application/vnd.ms-xpsdocument, application/xaml+xml, application/x-silverlight-2-b1, */*";
         private static string userAgent = "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.1; WOW64; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E; Zune 4.7; BOIE9;ZHCN)";
         private static string referer = "https://kyfw.12306.cn/";
-        public static CookieCollection _12306Cookies = null;
+        public static CookieContainer _12306Cookies = new CookieContainer();
 
         /// <summary>
         /// 提交订单数据
@@ -35,7 +36,9 @@ namespace AutoTicket
             httpWebRequest.Accept = accept;
             httpWebRequest.UserAgent = userAgent;
             httpWebRequest.Method = "POST";
+            httpWebRequest.Proxy = new WebProxy("127.0.0.1", 8087); // 由于公司 ip 被封，用了google 代理
             httpWebRequest.ContentLength = bs.Length;
+            httpWebRequest.ServicePoint.Expect100Continue = false;
             using (Stream reqStream = httpWebRequest.GetRequestStream())
             {
                 reqStream.Write(bs, 0, bs.Length);
@@ -105,8 +108,41 @@ namespace AutoTicket
             request.ContentType = contentType;
             request.KeepAlive = true;
             request.UseDefaultCredentials = true;
-            //  request.Proxy = null;
-            return request.GetResponse().GetResponseStream();
+            request.Proxy = new WebProxy("127.0.0.1", 8087);
+            WebResponse response = request.GetResponse();
+            fixCookies(request, (HttpWebResponse)response);
+            return response.GetResponseStream();
+        }
+
+        private static void fixCookies(HttpWebRequest request, HttpWebResponse response)
+        {
+            for (int i = 0; i < response.Headers.Count; i++)
+            {
+                string name = response.Headers.GetKey(i);
+                if (name != "Set-Cookie")
+                {
+                    continue;
+                }
+                string value = response.Headers.Get(i);
+                foreach (var singleCookie in value.Split(','))
+                {
+                    var path = singleCookie.Split(';')[1].Split('=')[1];
+                    Match match = Regex.Match(singleCookie, "(.*?)=(.*?);");
+                    if (match.Captures.Count == 0)
+                        continue;
+                    _12306Cookies.Add(
+                        new Cookie(
+                            match.Groups[1].ToString(),
+                            match.Groups[2].ToString(),
+                            path,
+                            request.Host.Split(':')[0]));
+                    response.Cookies.Add(new Cookie(
+                            match.Groups[1].ToString(),
+                            match.Groups[2].ToString(),
+                            path,
+                            request.Host.Split(':')[0]));
+                }
+            }
         }
     }
 }

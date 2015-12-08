@@ -18,6 +18,7 @@ namespace AutoTicket
     public partial class Form1 : Form
     {
         private static string FirstLoginGetCookieUrl = "https://kyfw.12306.cn/otn/resources/merged/common_js.js?scriptVersion=1.8840";
+
         public Form1()
         {
             InitializeComponent();
@@ -116,14 +117,14 @@ namespace AutoTicket
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            this.MethodToAccessSSL();
-            string url = "https://dynamic.12306.cn/otsweb/";
-            HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(url);
-            webRequest.CookieContainer = this.cc;
-            WebResponse response = webRequest.GetResponse();
-            Stream s = response.GetResponseStream();
+            //this.MethodToAccessSSL();
+            //string url = "https://dynamic.12306.cn/otsweb/";
+            //HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(url);
+            //webRequest.CookieContainer = this.cc;
+            //WebResponse response = webRequest.GetResponse();
+            //Stream s = response.GetResponseStream();
             //this.pictureBox1.Image = Image.FromStream(s);
-            response.Close();
+            //response.Close();
 
             //Cookie co = new Cookie();
             //co.Name = "BIGipServerotsweb";
@@ -137,11 +138,23 @@ namespace AutoTicket
             //co.Path = "/otsweb";
             //co.Domain = "dynamic.12306.cn";
             //this.cc.Add(co);
+
+            button3_Click(sender, e);
         }
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            var loginRes = HttpWebRequestExtension.GetWebContent(FirstLoginGetCookieUrl, null);
+            //var loginRes = HttpWebRequestExtension.GetWebContent(FirstLoginGetCookieUrl, null);
+            //this.richTextBox1.Text = loginRes;
+
+            var checkRandCode = HttpWebRequestExtension.PostWebContent(TrainUrlConstant.CheckRand, HttpWebRequestExtension._12306Cookies,
+                "randCode=" + txtRandCode.Text + "&rand=sjrand");
+            this.richTextBox1.Text = checkRandCode;
+
+            var loginRes = HttpWebRequestExtension.PostWebContent(TrainUrlConstant.LoginPostForm, HttpWebRequestExtension._12306Cookies,
+                              "loginUserDTO.user_name=" + this.txtUserName.Text + "&userDTO.password=" + this.txtPassword.Text
+                              + "&randCode=" + txtRandCode.Text
+                              );
             this.richTextBox1.Text = loginRes;
         }
 
@@ -149,6 +162,27 @@ namespace AutoTicket
         {
             QueryTicket tic = new QueryTicket();
             tic.Show();
+        }
+
+        /// <summary>
+        /// 看不清图片，刷新一张
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button3_Click(object sender, EventArgs e)
+        {
+            var random = string.Format(TrainUrlConstant.loginImg, new Random().NextDouble());
+            this.pictureBox1.Image = Image.FromStream((Stream)HttpWebRequestExtension.GetWebImage(random, new CookieContainer()));
+        }
+
+        /// <summary>
+        /// 选图片验证码
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
+        {
+            this.txtRandCode.Text += (string.IsNullOrEmpty(this.txtRandCode.Text) ? "" : ",") + e.X + "," + e.Y;
         }
     }
 }
