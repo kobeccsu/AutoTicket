@@ -39,6 +39,8 @@
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.button2 = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.label4 = new System.Windows.Forms.Label();
+            this.lblCDNSite = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // cmbstartStation
@@ -93,7 +95,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(542, 73);
+            this.button1.Location = new System.Drawing.Point(472, 31);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(119, 23);
             this.button1.TabIndex = 6;
@@ -103,7 +105,7 @@
             // 
             // richTextBox1
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(67, 302);
+            this.richTextBox1.Location = new System.Drawing.Point(26, 204);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.Size = new System.Drawing.Size(416, 96);
             this.richTextBox1.TabIndex = 7;
@@ -111,7 +113,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(542, 131);
+            this.button2.Location = new System.Drawing.Point(472, 67);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(119, 23);
             this.button2.TabIndex = 8;
@@ -125,11 +127,30 @@
             this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(24, 331);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(53, 12);
+            this.label4.TabIndex = 9;
+            this.label4.Text = "CDN站点:";
+            // 
+            // lblCDNSite
+            // 
+            this.lblCDNSite.AutoSize = true;
+            this.lblCDNSite.Location = new System.Drawing.Point(78, 331);
+            this.lblCDNSite.Name = "lblCDNSite";
+            this.lblCDNSite.Size = new System.Drawing.Size(0, 12);
+            this.lblCDNSite.TabIndex = 10;
+            // 
             // QueryTicket
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(740, 429);
+            this.Controls.Add(this.lblCDNSite);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.button1);
@@ -158,5 +179,7 @@
         private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label lblCDNSite;
     }
 }

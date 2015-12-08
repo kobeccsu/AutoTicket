@@ -19,6 +19,7 @@ namespace AutoTicket
         private static string userAgent = "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.1; WOW64; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E; Zune 4.7; BOIE9;ZHCN)";
         private static string referer = "https://kyfw.12306.cn/";
         public static CookieContainer _12306Cookies = new CookieContainer();
+        private static bool UserProxy = false; // 公司网络有时候要开启代理
 
         /// <summary>
         /// 提交订单数据
@@ -36,14 +37,19 @@ namespace AutoTicket
             httpWebRequest.Accept = accept;
             httpWebRequest.UserAgent = userAgent;
             httpWebRequest.Method = "POST";
-            httpWebRequest.Proxy = new WebProxy("127.0.0.1", 8087); // 由于公司 ip 被封，用了google 代理
+            if (UserProxy)
+            {
+                httpWebRequest.Proxy = new WebProxy("127.0.0.1", 8087); // 由于公司 ip 被封，用了google 代理 
+            }
             httpWebRequest.ContentLength = bs.Length;
             httpWebRequest.ServicePoint.Expect100Continue = false;
             using (Stream reqStream = httpWebRequest.GetRequestStream())
             {
                 reqStream.Write(bs, 0, bs.Length);
             }
+            
             var httpWebResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+            fixCookies(httpWebRequest, (HttpWebResponse)httpWebResponse);
             Stream responseStream = httpWebResponse.GetResponseStream();
             StreamReader streamReader = new StreamReader(responseStream, Encoding.UTF8);
             string html = streamReader.ReadToEnd();
@@ -71,17 +77,19 @@ namespace AutoTicket
             httpWebRequest.Accept = accept;
             httpWebRequest.UserAgent = userAgent;
             httpWebRequest.Method = "GET";
+
+            if (UserProxy)
+            {
+                httpWebRequest.Proxy = new WebProxy("127.0.0.1", 8087); 
+            }
             httpWebRequest.ServicePoint.ConnectionLimit = int.MaxValue;
 
             var httpWebResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+            fixCookies(httpWebRequest, (HttpWebResponse)httpWebResponse);
             Stream responseStream = httpWebResponse.GetResponseStream();
             StreamReader streamReader = new StreamReader(responseStream, Encoding.UTF8);
-
-            string html = streamReader.ReadToEnd();
-                //httpWebResponse == null || httpWebResponse.Cookies.Count == 0 ? "没有" : 
-                //httpWebResponse.Cookies["JSESSIONID"] == null ? "没有Session" : httpWebResponse.Cookies["JSESSIONID"].Value;
-                //streamReader.ReadToEnd();
             
+            string html = streamReader.ReadToEnd();
 
             streamReader.Close();
             responseStream.Close();
@@ -108,12 +116,21 @@ namespace AutoTicket
             request.ContentType = contentType;
             request.KeepAlive = true;
             request.UseDefaultCredentials = true;
-            request.Proxy = new WebProxy("127.0.0.1", 8087);
+
+            if (UserProxy)
+            {
+                request.Proxy = new WebProxy("127.0.0.1", 8087); 
+            }
             WebResponse response = request.GetResponse();
             fixCookies(request, (HttpWebResponse)response);
             return response.GetResponseStream();
         }
 
+        /// <summary>
+        /// 获取 cookie，因为在获取第一张图片的时候才可以知道，而且这个时候只放在 Set-Cookie 这个节里，要把他读出来
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="response"></param>
         private static void fixCookies(HttpWebRequest request, HttpWebResponse response)
         {
             for (int i = 0; i < response.Headers.Count; i++)

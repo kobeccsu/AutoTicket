@@ -24,7 +24,7 @@ namespace AutoTicket
         private void GetData()
         {
             var url = "https://kyfw.12306.cn/otn/resources/js/framework/station_name.js";
-            var loginRes = HttpWebRequestExtension.GetWebContent(url, null);
+            var loginRes = HttpWebRequestExtension.GetWebContent(url, HttpWebRequestExtension._12306Cookies);
             SplitData(loginRes);
         }
 
@@ -35,7 +35,8 @@ namespace AutoTicket
         private void SplitData(string station)
         {
             var s = station.Split('=')[1].Replace("'", "").Replace(";", "").Split('|');
-
+            List<ItemObject> allPlace = new List<ItemObject>();
+            List<ItemObject> endPlace = new List<ItemObject>();
             for (int i = 0; i < s.Length; i++)
             {
                 if (i % 5 == 0)
@@ -45,20 +46,38 @@ namespace AutoTicket
                         string statename = s[i + 1];
                         string code = s[i + 2];
                         cacheDic.Add(statename, code);
-                        cmbstartStation.Items.Add(statename);
-                        cmbendStation.Items.Add(statename);
+                        allPlace.Add(new ItemObject() { Name= statename, Value= code });
+                        endPlace.Add(new ItemObject() { Name = statename, Value = code });
+                        //cmbstartStation.Items.Add(statename);
+                        //cmbendStation.Items.Add(statename);
                     }
                 }
             }
+            
+            cmbstartStation.DataSource = allPlace;
+            cmbstartStation.DisplayMember = "Name";
+            cmbstartStation.ValueMember = "Value";
+
+            cmbendStation.DataSource = endPlace;
+            cmbendStation.DisplayMember = "Name";
+            cmbendStation.ValueMember = "Value";
         }
 
+        /// <summary>
+        /// 查询余票
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button1_Click(object sender, EventArgs e)
         {
-            var url = string.Format(TrainUrlConstant.TrainleftTicketInfo, dtpTrainDate.Value , cmbstartStation.SelectedValue, cmbendStation.SelectedValue);
+            this.richTextBox1.Text = "";
 
-            var trainleftTicketInfoRes = HttpWebRequestExtension.GetWebContent(url, new CookieContainer());
+            var url = string.Format(TrainUrlConstant.TrainleftTicketInfo, dtpTrainDate.Value.ToString("yyyy-MM-dd"),
+                cmbstartStation.SelectedValue, cmbendStation.SelectedValue);
 
-            this.richTextBox1.Text = trainleftTicketInfoRes;
+            var trainleftTicketInfoRes = HttpWebRequestExtension.GetWebContent(url, HttpWebRequestExtension._12306Cookies);
+
+            this.richTextBox1.Text = trainleftTicketInfoRes + cmbstartStation.SelectedValue + cmbendStation.SelectedValue;
         }
 
         // 刷出的列表选车次
@@ -70,7 +89,7 @@ namespace AutoTicket
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            this.richTextBox1.Text = CDNReset.GetCDN();
+            //this.lblCDNSite.Text = CDNReset.GetCDN();
         }
     }
 }

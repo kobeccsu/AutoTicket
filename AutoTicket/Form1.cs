@@ -155,6 +155,10 @@ namespace AutoTicket
                               "loginUserDTO.user_name=" + this.txtUserName.Text + "&userDTO.password=" + this.txtPassword.Text
                               + "&randCode=" + txtRandCode.Text
                               );
+
+            var finalLoginStep = HttpWebRequestExtension.PostWebContent(TrainUrlConstant.LoginSuccessFinal, HttpWebRequestExtension._12306Cookies,
+                "_json_att=");
+
             this.richTextBox1.Text = loginRes;
         }
 
