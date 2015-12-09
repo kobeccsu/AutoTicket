@@ -14,6 +14,11 @@ namespace AutoTicket
         public const string loginImg = "https://kyfw.12306.cn/otn/passcodeNew/getPassCodeNew?module=login&rand=sjrand&{0}";
 
         /// <summary>
+        /// 获取所有的联系人
+        /// </summary>
+        public const string GetPassengers = "https://kyfw.12306.cn/otn/confirmPassenger/getPassengerDTOs";
+
+        /// <summary>
         /// 用作正式登录，网上说没这一步是登录不了的
         /// </summary>
         public const string LoginSuccessFinal = "https://kyfw.12306.cn/otn/login/userLogin";

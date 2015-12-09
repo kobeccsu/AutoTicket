@@ -94,7 +94,8 @@ namespace AutoTicket
                 row["buttonTextInfo"] = item.buttonTextInfo;
                 dt.Rows.Add(row);
             }
-            
+
+            this.dataGridView1.AutoGenerateColumns = false;
             this.dataGridView1.DataSource = dt;
             this.dataGridView1.Refresh();
             

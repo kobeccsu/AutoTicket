@@ -175,6 +175,7 @@ namespace AutoTicket
         /// <param name="e"></param>
         private void button3_Click(object sender, EventArgs e)
         {
+            this.txtRandCode.Text = "";
             var random = string.Format(TrainUrlConstant.loginImg, new Random().NextDouble());
             this.pictureBox1.Image = Image.FromStream((Stream)HttpWebRequestExtension.GetWebImage(random, new CookieContainer()));
         }
