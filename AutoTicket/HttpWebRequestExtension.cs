@@ -19,7 +19,11 @@ namespace AutoTicket
         public static string userAgent = "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.1; WOW64; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E; Zune 4.7; BOIE9;ZHCN)";
         public static string referer = "https://kyfw.12306.cn/";
         public static CookieContainer _12306Cookies = new CookieContainer();
-        private static bool UserProxy = false; // 公司网络有时候要开启代理
+        private static bool UserProxy = true; // 公司网络有时候要开启代理
+        /// <summary>
+        /// 后续提交步骤所需要的令牌
+        /// </summary>
+        public static string TOKEN = "";
 
         /// <summary>
         /// 提交订单数据
@@ -160,6 +164,21 @@ namespace AutoTicket
                             request.Host.Split(':')[0]));
                 }
             }
+        }
+
+        /// <summary>
+        /// 获取提交订票时所需要的 token
+        /// </summary>
+        /// <param name="inputString"></param>
+        /// <returns></returns>
+        public static string GetToken(string inputString)
+        {
+            Match match = Regex.Match(inputString, "(?<=()var globalRepeatSubmitToken = ').*(?=';)");
+            if (match.Success)
+            {
+                return match.Value;
+            }
+            return string.Empty;
         }
     }
 }

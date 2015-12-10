@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -22,6 +23,9 @@ namespace AutoTicket
             GetData();
         }
 
+        /// <summary>
+        /// 加载站点间数据，这里可能已经过时，手动输入的时候已经不是这几个站点了
+        /// </summary>
         private void GetData()
         {
             var url = "https://kyfw.12306.cn/otn/resources/js/framework/station_name.js";
@@ -105,22 +109,13 @@ namespace AutoTicket
         // 刷出的列表选车次
         private void button2_Click(object sender, EventArgs e)
         {
-            HttpWebRequestExtension.referer = "https://kyfw.12306.cn/otn/leftTicket/init";
-            var checkuser = HttpWebRequestExtension.PostWebContent(TrainUrlConstant.CheckUser, HttpWebRequestExtension._12306Cookies, "_json_att=");
 
-            var param = "secretStr=" + "MjAxNS0xMi0xMCMwMCNHMTAzMiMwMjozOSMxMjozNyM2aTAwMEcxMDMyMDAjSU9RI0hWUSMxNToxNiPmt7HlnLPljJcj6KGh6Ziz5LicIzAxIzA2I08wMDAwMDAyMTdNMDAwMDAwMDEyOTAwMDAwMDAwMCNRNiMxNDQ5NjYzNTA4OTQxIzE0NDQ2MTE2MDAwMDAjNzJFOUNDODY2MjU2OEU1MTRFRjIyOTIwREY3REQwMEZBOEZGMjU1RUIxMzYzOTMzQUNDQjY5OTY="
-                + "&train_date=" + "2015-12-10" +
-                "&back_train_date=" + "2015-12-09" + "&tour_flag=dc&purpose_codes=ADULT&query_from_station_name="
-                + "深圳" + "&query_to_station_name=" + "衡阳" + "&undefined=";
+            RobTicket finalStep = new RobTicket();
+            finalStep.Show();
 
-            HttpWebRequestExtension.referer = "https://kyfw.12306.cn/otn/leftTicket/init";
-            HttpWebRequestExtension.contentType = "application/json;charset=UTF-8";
-            var confirmParmRes = HttpWebRequestExtension.PostWebContent(TrainUrlConstant.SubmitOrderPredicateUrl, HttpWebRequestExtension._12306Cookies, param);
-
-            // initdc 页面会设置几个值 这个时候需要取出来
-            var redirectInitDC = HttpWebRequestExtension.PostWebContent(TrainUrlConstant.InitDcPage, HttpWebRequestExtension._12306Cookies, "_json_att=");
-            this.richTextBox1.Text += redirectInitDC;
         }
+
+        
 
         private void timer1_Tick(object sender, EventArgs e)
         {

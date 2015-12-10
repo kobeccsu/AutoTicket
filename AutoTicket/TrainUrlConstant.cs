@@ -63,7 +63,7 @@ namespace AutoTicket
         //Referer:https://kyfw.12306.cn/otn/confirmPassenger/initDc
         //User-Agent:Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36
         /// </summary>
-        public const string LastGetRandCode = "https://kyfw.12306.cn/otn/passcodeNew/getPassCodeNew?module=passenger&rand=randp&0.9713628685567528";
+        public const string LastGetRandCode = "https://kyfw.12306.cn/otn/passcodeNew/getPassCodeNew?module=passenger&rand=randp&{0}";
 
 
         //-- 进入最后选好人输完验证码的步骤

@@ -125,7 +125,7 @@
             // 
             this.richTextBox1.Location = new System.Drawing.Point(26, 576);
             this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(416, 96);
+            this.richTextBox1.Size = new System.Drawing.Size(741, 96);
             this.richTextBox1.TabIndex = 7;
             this.richTextBox1.Text = "";
             // 
@@ -148,7 +148,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(636, 660);
+            this.label4.Location = new System.Drawing.Point(773, 660);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(53, 12);
             this.label4.TabIndex = 9;
@@ -305,7 +305,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1005, 681);
+            this.ClientSize = new System.Drawing.Size(998, 683);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.lblCDNSite);
             this.Controls.Add(this.label4);

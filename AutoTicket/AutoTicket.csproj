@@ -66,6 +66,12 @@
     <Compile Include="QueryTicket.Designer.cs">
       <DependentUpon>QueryTicket.cs</DependentUpon>
     </Compile>
+    <Compile Include="RobTicket.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RobTicket.Designer.cs">
+      <DependentUpon>RobTicket.cs</DependentUpon>
+    </Compile>
     <Compile Include="TicketModel.cs" />
     <Compile Include="TrainUrlConstant.cs" />
     <Compile Include="Util.cs" />
@@ -83,6 +89,9 @@
     </Compile>
     <EmbeddedResource Include="QueryTicket.resx">
       <DependentUpon>QueryTicket.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RobTicket.resx">
+      <DependentUpon>RobTicket.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
