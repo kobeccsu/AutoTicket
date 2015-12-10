@@ -77,9 +77,14 @@ namespace AutoTicket
         {
             this.richTextBox1.Text = "";
 
+            var logUrl = string.Format(TrainUrlConstant.LogLeftTicketLog, dtpTrainDate.Value.ToString("yyyy-MM-dd"),
+                cmbstartStation.SelectedValue, cmbendStation.SelectedValue);
+
             var url = string.Format(TrainUrlConstant.TrainleftTicketInfo, dtpTrainDate.Value.ToString("yyyy-MM-dd"),
                 cmbstartStation.SelectedValue, cmbendStation.SelectedValue);
 
+
+            var trainLeftLog = HttpWebRequestExtension.GetWebContent(logUrl, HttpWebRequestExtension._12306Cookies);
             var trainleftTicketInfoRes = HttpWebRequestExtension.GetWebContent(url, HttpWebRequestExtension._12306Cookies);
 
             RootObject obj = JsonConvert.DeserializeObject<RootObject>(trainleftTicketInfoRes);

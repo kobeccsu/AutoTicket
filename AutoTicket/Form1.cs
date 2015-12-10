@@ -177,7 +177,7 @@ namespace AutoTicket
         {
             this.txtRandCode.Text = "";
             var random = string.Format(TrainUrlConstant.loginImg, new Random().NextDouble());
-            this.pictureBox1.Image = Image.FromStream((Stream)HttpWebRequestExtension.GetWebImage(random, new CookieContainer()));
+            this.pictureBox1.Image = Image.FromStream(HttpWebRequestExtension.GetWebImage(random, new CookieContainer()));
         }
 
         /// <summary>

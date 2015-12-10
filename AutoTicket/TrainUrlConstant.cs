@@ -13,11 +13,7 @@ namespace AutoTicket
         /// </summary>
         public const string loginImg = "https://kyfw.12306.cn/otn/passcodeNew/getPassCodeNew?module=login&rand=sjrand&{0}";
 
-        /// <summary>
-        /// 获取所有的联系人
-        /// </summary>
-        public const string GetPassengers = "https://kyfw.12306.cn/otn/confirmPassenger/getPassengerDTOs";
-
+       
         /// <summary>
         /// 用作正式登录，网上说没这一步是登录不了的
         /// </summary>
@@ -30,6 +26,12 @@ namespace AutoTicket
         /// 登录提交 form 地址
         /// </summary>
         public const string LoginPostForm = "https://kyfw.12306.cn/otn/login/loginAysnSuggest";
+
+        /// <summary>
+        /// 这里看起来是记录日志
+        /// </summary>
+        public const string LogLeftTicketLog = "https://kyfw.12306.cn/otn/leftTicket/log?leftTicketDTO.train_date={0}&leftTicketDTO.from_station={1}&leftTicketDTO.to_station={2}&purpose_codes=ADULT";
+
         /// <summary>
         /// 剩余票数
         /// </summary>
@@ -50,6 +52,11 @@ namespace AutoTicket
         /// 进入最后选择席别页面
         /// </summary>
         public const string InitDcPage = "https://kyfw.12306.cn/otn/confirmPassenger/initDc?_json_att=";
+
+        /// <summary>
+        /// 获取所有的联系人
+        /// </summary>
+        public const string GetPassengers = "https://kyfw.12306.cn/otn/confirmPassenger/getPassengerDTOs";
 
 
         /// <summary>

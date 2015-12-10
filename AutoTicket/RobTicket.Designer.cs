@@ -40,14 +40,14 @@
             // 
             this.pictureBox1.Location = new System.Drawing.Point(79, 93);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(458, 239);
+            this.pictureBox1.Size = new System.Drawing.Size(478, 281);
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseClick_1);
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(176, 25);
+            this.button1.Location = new System.Drawing.Point(290, 56);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 1;
@@ -57,7 +57,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(563, 93);
+            this.button2.Location = new System.Drawing.Point(605, 93);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 2;
@@ -74,9 +74,9 @@
             // 
             // richTextBox1
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(79, 360);
+            this.richTextBox1.Location = new System.Drawing.Point(79, 403);
             this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(344, 96);
+            this.richTextBox1.Size = new System.Drawing.Size(478, 96);
             this.richTextBox1.TabIndex = 4;
             this.richTextBox1.Text = "";
             // 
@@ -84,7 +84,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(740, 554);
+            this.ClientSize = new System.Drawing.Size(786, 608);
             this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.txtRandCode);
             this.Controls.Add(this.button2);
