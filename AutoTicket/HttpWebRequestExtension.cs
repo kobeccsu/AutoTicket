@@ -126,6 +126,7 @@ namespace AutoTicket
                 request.Proxy = new WebProxy("127.0.0.1", 8087); 
             }
             WebResponse response = request.GetResponse();
+            //response.ResponseUri
             fixCookies(request, (HttpWebResponse)response);
             return response.GetResponseStream();
         }
