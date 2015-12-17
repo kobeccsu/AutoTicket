@@ -117,28 +117,6 @@ namespace AutoTicket
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //this.MethodToAccessSSL();
-            //string url = "https://dynamic.12306.cn/otsweb/";
-            //HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(url);
-            //webRequest.CookieContainer = this.cc;
-            //WebResponse response = webRequest.GetResponse();
-            //Stream s = response.GetResponseStream();
-            //this.pictureBox1.Image = Image.FromStream(s);
-            //response.Close();
-
-            //Cookie co = new Cookie();
-            //co.Name = "BIGipServerotsweb";
-            //co.Value = "2700542218.36895.0000";
-            //co.Path = "/";
-            //co.Domain = "dynamic.12306.cn";
-            //this.cc.Add(co);
-            //co = new Cookie();
-            //co.Name = "JSESSIONID";
-            //co.Value = "8FD1A56E8D082E10D5BCED8ABB013C32";
-            //co.Path = "/otsweb";
-            //co.Domain = "dynamic.12306.cn";
-            //this.cc.Add(co);
-
             button3_Click(sender, e);
         }
 
@@ -147,20 +125,17 @@ namespace AutoTicket
             //var loginRes = HttpWebRequestExtension.GetWebContent(FirstLoginGetCookieUrl, null);
             //this.richTextBox1.Text = loginRes;
 
-            var checkRandCode = HttpWebRequestExtension.PostWebContent(TrainUrlConstant.CheckRand, HttpWebRequestExtension._12306Cookies,
-                "randCode=" + txtRandCode.Text + "&rand=sjrand");
+            var checkRandCode = TicketBiz.FirstCheckRandCode(txtRandCode.Text);
             this.richTextBox1.Text += checkRandCode;
 
-            var loginRes = HttpWebRequestExtension.PostWebContent(TrainUrlConstant.LoginPostForm, HttpWebRequestExtension._12306Cookies,
-                              "loginUserDTO.user_name=" + this.txtUserName.Text + "&userDTO.password=" + this.txtPassword.Text
-                              + "&randCode=" + txtRandCode.Text
-                              );
+            var loginRes = TicketBiz.FirstLogin(txtUserName.Text, txtPassword.Text, txtRandCode.Text);
 
-            var finalLoginStep = HttpWebRequestExtension.PostWebContent(TrainUrlConstant.LoginSuccessFinal, HttpWebRequestExtension._12306Cookies,
-                "_json_att=");
+            TicketBiz.LoginFinalStep();
 
             this.richTextBox1.Text += loginRes;
         }
+
+
 
         private void button2_Click_1(object sender, EventArgs e)
         {

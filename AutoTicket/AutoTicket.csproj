@@ -72,6 +72,7 @@
     <Compile Include="RobTicket.Designer.cs">
       <DependentUpon>RobTicket.cs</DependentUpon>
     </Compile>
+    <Compile Include="TicketBiz.cs" />
     <Compile Include="TicketModel.cs" />
     <Compile Include="TrainUrlConstant.cs" />
     <Compile Include="Util.cs" />
