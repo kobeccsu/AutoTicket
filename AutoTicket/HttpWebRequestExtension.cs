@@ -19,7 +19,7 @@ namespace AutoTicket
         public static string userAgent = "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36";
         public static string referer = "https://kyfw.12306.cn/";
         public static CookieContainer _12306Cookies = new CookieContainer();
-        private static bool UserProxy = true; // 公司网络有时候要开启代理
+        private static bool UserProxy = false; // 公司网络有时候要开启代理
         /// <summary>
         /// 后续提交步骤所需要的令牌
         /// </summary>
@@ -105,7 +105,7 @@ namespace AutoTicket
         }
 
         /// <summary>
-        /// 获取网页验证码图片
+        /// 获取网页验证码图片,很奇怪用stream 获取的坐标是正确的，而用 path 就是不正确的
         /// </summary>
         /// <param name="url"></param>
         /// <param name="cookie"></param>
@@ -126,7 +126,7 @@ namespace AutoTicket
                 request.Proxy = new WebProxy("127.0.0.1", 8087); 
             }
             WebResponse response = request.GetResponse();
-            //response.ResponseUri
+            
             fixCookies(request, (HttpWebResponse)response);
             return response.GetResponseStream();
         }

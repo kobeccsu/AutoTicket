@@ -149,7 +149,7 @@ namespace AutoTicket
 
             var checkRandCode = HttpWebRequestExtension.PostWebContent(TrainUrlConstant.CheckRand, HttpWebRequestExtension._12306Cookies,
                 "randCode=" + txtRandCode.Text + "&rand=sjrand");
-            this.richTextBox1.Text = checkRandCode;
+            this.richTextBox1.Text += checkRandCode;
 
             var loginRes = HttpWebRequestExtension.PostWebContent(TrainUrlConstant.LoginPostForm, HttpWebRequestExtension._12306Cookies,
                               "loginUserDTO.user_name=" + this.txtUserName.Text + "&userDTO.password=" + this.txtPassword.Text
@@ -159,7 +159,7 @@ namespace AutoTicket
             var finalLoginStep = HttpWebRequestExtension.PostWebContent(TrainUrlConstant.LoginSuccessFinal, HttpWebRequestExtension._12306Cookies,
                 "_json_att=");
 
-            this.richTextBox1.Text = loginRes;
+            this.richTextBox1.Text += loginRes;
         }
 
         private void button2_Click_1(object sender, EventArgs e)
