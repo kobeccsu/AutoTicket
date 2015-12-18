@@ -135,8 +135,6 @@ namespace AutoTicket
             this.richTextBox1.Text += loginRes;
         }
 
-
-
         private void button2_Click_1(object sender, EventArgs e)
         {
             QueryTicket tic = new QueryTicket();

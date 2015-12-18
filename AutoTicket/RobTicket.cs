@@ -19,6 +19,11 @@ namespace AutoTicket
             InitializeComponent();
         }
 
+        /// <summary>
+        /// 抢某张票
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button1_Click(object sender, EventArgs e)
         {
             var result = TicketBiz.LastCheckRandCode(txtRandCode.Text);
@@ -61,7 +66,7 @@ namespace AutoTicket
         /// <param name="e"></param>
         private void RobTicket_Load(object sender, EventArgs e)
         {
-            TicketBiz.CheckUser();
+            this.richTextBox1.Text += "检查用户：" + TicketBiz.CheckUser();
 
             TicketBiz.ChooseTicketIntoLastStep();
 

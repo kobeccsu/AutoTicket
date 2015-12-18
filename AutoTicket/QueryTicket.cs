@@ -109,6 +109,48 @@ namespace AutoTicket
             this.dataGridView1.Refresh();
             
             this.richTextBox1.Text = trainleftTicketInfoRes;
+
+            SaveJCCookie();
+        }
+
+        /// <summary>
+        /// 在查询站的时候，需要存一下查询的记录到 cookie ，这里12306 会去检测
+        /// </summary>
+        private void SaveJCCookie()
+        {
+            HttpWebRequestExtension._12306Cookies.Add(
+                    new Cookie(
+                        "_jc_save_fromStation",
+                        Util.Escape(cmbstartStation.Text + "," + cmbstartStation.SelectedValue),
+                        "/",
+                        "kyfw.12306.cn"));
+
+            HttpWebRequestExtension._12306Cookies.Add(
+                        new Cookie(
+                            "_jc_save_toStation",
+                            Util.Escape(cmbendStation.Text + "," + cmbendStation.SelectedValue),
+                            "/",
+                            "kyfw.12306.cn"));
+            HttpWebRequestExtension._12306Cookies.Add(
+                        new Cookie(
+                            "_jc_save_fromDate",
+                            dtpTrainDate.Value.ToString("yyyy-MM-dd"),
+                            "/",
+                            "kyfw.12306.cn"));
+            HttpWebRequestExtension._12306Cookies.Add(
+                        new Cookie(
+                            "_jc_save_toDate",
+                            dtpTrainDate.Value.AddDays(-1).ToString("yyyy-MM-dd"),
+                            "/",
+                           "kyfw.12306.cn"));
+
+            HttpWebRequestExtension._12306Cookies.Add(
+                    new Cookie(
+                    "_jc_save_wfdc_flag",
+                    "dc",
+                    "/",
+                    "kyfw.12306.cn"));
+
         }
 
         // 刷出的列表选车次

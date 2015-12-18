@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Cache;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -14,12 +16,13 @@ namespace AutoTicket
     /// </summary>
     public class HttpWebRequestExtension
     {
-        public static string contentType = "application/x-www-form-urlencoded";
-        public static string accept = "image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, application/x-shockwave-flash, application/x-silverlight, application/vnd.ms-excel, application/vnd.ms-powerpoint, application/msword, application/x-ms-application, application/x-ms-xbap, application/vnd.ms-xpsdocument, application/xaml+xml, application/x-silverlight-2-b1, */*";
+        public static string contentType = "application/x-www-form-urlencoded; charset=UTF-8";
+        public static string accept = "*/*";
         public static string userAgent = "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36";
         public static string referer = "https://kyfw.12306.cn/";
         public static CookieContainer _12306Cookies = new CookieContainer();
-        private static bool UserProxy = false; // 公司网络有时候要开启代理
+        private static bool UserProxy = true; // 公司网络有时候要开启代理
+
         /// <summary>
         /// 后续提交步骤所需要的令牌
         /// </summary>
@@ -32,7 +35,7 @@ namespace AutoTicket
         /// <param name="cookie"></param>
         /// <param name="param"></param>
         /// <returns></returns>
-        public static string PostWebContent(string url, CookieContainer cookie, string param)
+        public static string PostWebContent(string url, CookieContainer cookie, string param, PostParamSet postParam = PostParamSet.Normal)
         {
             byte[] bs = Encoding.ASCII.GetBytes(param);
             var httpWebRequest = (HttpWebRequest)HttpWebRequest.Create(url);
@@ -41,6 +44,21 @@ namespace AutoTicket
             httpWebRequest.Accept = accept;
             httpWebRequest.UserAgent = userAgent;
             httpWebRequest.Method = "POST";
+            httpWebRequest.Headers.Add("X-Requested-With", "XMLHttpRequest");
+            httpWebRequest.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip, deflate");
+            httpWebRequest.Headers.Add(HttpRequestHeader.AcceptLanguage, "zh-cn");
+
+            if ((postParam & PostParamSet.NoCache) == PostParamSet.NoCache)
+            {
+                httpWebRequest.Headers.Add("Cache-Control", "no-cache");
+                
+            }
+            if ((postParam & PostParamSet.If_modify_since) == PostParamSet.If_modify_since)
+            {
+                Type type = httpWebRequest.Headers.GetType();
+                type.InvokeMember("AddInternal", BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.NonPublic, 
+                    null, httpWebRequest.Headers, new object[] { "If-Modified-Since", "0" });
+            }
             if (UserProxy)
             {
                 httpWebRequest.Proxy = new WebProxy("127.0.0.1", 8087); // 由于公司 ip 被封，用了google 代理 
@@ -81,7 +99,7 @@ namespace AutoTicket
             httpWebRequest.Accept = accept;
             httpWebRequest.UserAgent = userAgent;
             httpWebRequest.Method = "GET";
-
+            httpWebRequest.CookieContainer = cookie;
             if (UserProxy)
             {
                 httpWebRequest.Proxy = new WebProxy("127.0.0.1", 8087); 
@@ -181,5 +199,22 @@ namespace AutoTicket
             }
             return string.Empty;
         }
+    }
+
+    [Flags]
+    public enum PostParamSet
+    { 
+        /// <summary>
+        /// 默认什么都不干
+        /// </summary>
+        Normal = 0,
+        /// <summary>
+        /// 设置不要缓存
+        /// </summary>
+        NoCache = 1,
+        /// <summary>
+        /// 来自更改
+        /// </summary>
+        If_modify_since = 2
     }
 }
