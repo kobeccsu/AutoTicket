@@ -45,8 +45,8 @@ namespace AutoTicket
             httpWebRequest.UserAgent = userAgent;
             httpWebRequest.Method = "POST";
             httpWebRequest.Headers.Add("X-Requested-With", "XMLHttpRequest");
-            httpWebRequest.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip, deflate");
-            httpWebRequest.Headers.Add(HttpRequestHeader.AcceptLanguage, "zh-cn");
+            //httpWebRequest.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip, deflate");
+            //httpWebRequest.Headers.Add(HttpRequestHeader.AcceptLanguage, "zh-cn");
 
             if ((postParam & PostParamSet.NoCache) == PostParamSet.NoCache)
             {
@@ -132,7 +132,7 @@ namespace AutoTicket
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.Referer = referer;
-            request.UserAgent = "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36";
+            request.UserAgent = userAgent;
             request.Accept = "image/webp,*/*;q=0.8";
             request.CookieContainer = cookie;
             //request.ContentType = contentType;
