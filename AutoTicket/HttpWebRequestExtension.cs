@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -35,7 +36,8 @@ namespace AutoTicket
         /// <param name="cookie"></param>
         /// <param name="param"></param>
         /// <returns></returns>
-        public static string PostWebContent(string url, CookieContainer cookie, string param, PostParamSet postParam = PostParamSet.Normal)
+        public static string PostWebContent(string url, CookieContainer cookie, string param, PostParamSet postParam = PostParamSet.Normal, 
+            CookieStatus cookeWrite = CookieStatus.Default)
         {
             Util.MethodToAccessSSL();
             byte[] bs = Encoding.ASCII.GetBytes(param);
@@ -66,15 +68,25 @@ namespace AutoTicket
             {
                 httpWebRequest.Proxy = new WebProxy("127.0.0.1", 8087); // 由于公司 ip 被封，用了google 代理 
             }
+            
+            httpWebRequest.UnsafeAuthenticatedConnectionSharing = true;
+            httpWebRequest.ServicePoint.ConnectionLimit = int.MaxValue;
+            httpWebRequest.ServicePoint.UseNagleAlgorithm = false;
             httpWebRequest.ContentLength = bs.Length;
             httpWebRequest.ServicePoint.Expect100Continue = false;
+            //httpWebRequest.Connection = "Keep-Alive";
+
             using (Stream reqStream = httpWebRequest.GetRequestStream())
             {
                 reqStream.Write(bs, 0, bs.Length);
             }
             
             var httpWebResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-            fixCookies(httpWebRequest, (HttpWebResponse)httpWebResponse);
+
+            if (cookeWrite == CookieStatus.ResponseSetCookie)
+            {
+                fixCookies(httpWebRequest, (HttpWebResponse)httpWebResponse); 
+            }
             Stream responseStream = httpWebResponse.GetResponseStream();
             StreamReader streamReader = new StreamReader(responseStream, Encoding.UTF8);
             string html = streamReader.ReadToEnd();
@@ -82,7 +94,7 @@ namespace AutoTicket
             streamReader.Close();
             responseStream.Close();
 
-            httpWebRequest.Abort();
+            //httpWebRequest.Abort();
             httpWebResponse.Close();
 
             return html;
@@ -103,6 +115,7 @@ namespace AutoTicket
             httpWebRequest.Accept = accept;
             httpWebRequest.UserAgent = userAgent;
             httpWebRequest.Method = "GET";
+            httpWebRequest.KeepAlive = true;
             httpWebRequest.CookieContainer = cookie;
             if (UserProxy)
             {
@@ -148,7 +161,6 @@ namespace AutoTicket
                 request.Proxy = new WebProxy("127.0.0.1", 8087); 
             }
             WebResponse response = request.GetResponse();
-            
             fixCookies(request, (HttpWebResponse)response);
             return response.GetResponseStream();
         }
@@ -160,6 +172,7 @@ namespace AutoTicket
         /// <param name="response"></param>
         private static void fixCookies(HttpWebRequest request, HttpWebResponse response)
         {
+            Util.BugFix_CookieDomain(_12306Cookies);
             for (int i = 0; i < response.Headers.Count; i++)
             {
                 string name = response.Headers.GetKey(i);
@@ -167,6 +180,7 @@ namespace AutoTicket
                 {
                     continue;
                 }
+
                 string value = response.Headers.Get(i);
                 foreach (var singleCookie in value.Split(','))
                 {
@@ -188,17 +202,19 @@ namespace AutoTicket
                     }
                     //}
                     
-                    if(response.Cookies[match.Groups[1].ToString()] == null)
-                    { 
+                    //if(response.Cookies[match.Groups[1].ToString()] == null)
+                    //{ 
                         response.Cookies.Add(new Cookie(
                             match.Groups[1].ToString(),
                             match.Groups[2].ToString(),
                             path,
                             request.Host.Split(':')[0]));
-                    }
+                    //}
                 }
             }
         }
+
+
 
         /// <summary>
         /// 获取提交订票时所需要的 token
@@ -213,6 +229,67 @@ namespace AutoTicket
                 return match.Value;
             }
             return string.Empty;
+        }
+
+        HttpWebRequest httpWebRequest = null;
+
+        void StartWebRequest(string url, CookieContainer cookie, string param, PostParamSet postParam = PostParamSet.Normal,
+            CookieStatus cookeWrite = CookieStatus.Default)
+        {
+            Util.MethodToAccessSSL();
+            byte[] bs = Encoding.ASCII.GetBytes(param);
+            httpWebRequest = (HttpWebRequest)HttpWebRequest.Create(url);
+            httpWebRequest.CookieContainer = cookie;
+            httpWebRequest.ContentType = contentType;
+            httpWebRequest.Accept = accept;
+            httpWebRequest.UserAgent = userAgent;
+            httpWebRequest.Method = "POST";
+            httpWebRequest.KeepAlive = true;
+            httpWebRequest.Host = "kyfw.12306.cn";
+            httpWebRequest.Headers.Add("X-Requested-With", "XMLHttpRequest");
+            //httpWebRequest.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip, deflate");
+            //httpWebRequest.Headers.Add(HttpRequestHeader.AcceptLanguage, "zh-cn");
+
+            if ((postParam & PostParamSet.NoCache) == PostParamSet.NoCache)
+            {
+                httpWebRequest.Headers.Add("Cache-Control", "no-cache");
+
+            }
+            if ((postParam & PostParamSet.If_modify_since) == PostParamSet.If_modify_since)
+            {
+                Type type = httpWebRequest.Headers.GetType();
+                type.InvokeMember("AddInternal", BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.NonPublic,
+                    null, httpWebRequest.Headers, new object[] { "If-Modified-Since", "0" });
+            }
+            if (UserProxy)
+            {
+                httpWebRequest.Proxy = new WebProxy("127.0.0.1", 8087); // 由于公司 ip 被封，用了google 代理 
+            }
+            httpWebRequest.ContentLength = bs.Length;
+            httpWebRequest.ServicePoint.Expect100Continue = false;
+            httpWebRequest.BeginGetResponse(new AsyncCallback(FinishWebRequest), null);
+        }
+
+        void FinishWebRequest(IAsyncResult result)
+        {
+            WebResponse httpWebResponse = httpWebRequest.EndGetResponse(result);
+            //if (cookeWrite == CookieStatus.ResponseSetCookie)
+            //{
+                fixCookies(httpWebRequest, (HttpWebResponse)httpWebResponse);
+            //}
+            Stream responseStream = httpWebResponse.GetResponseStream();
+            StreamReader streamReader = new StreamReader(responseStream, Encoding.UTF8);
+            string html = streamReader.ReadToEnd();
+
+            streamReader.Close();
+            responseStream.Close();
+
+            httpWebRequest.Abort();
+            httpWebResponse.Close();
+
+            //return html;
+            // todo: 目前就是 checkorder 这个地方卡住，两个地方与别的地方有区别，第一是在 jquery 中是 async 提交。第二是，观察正确的都有一个keep-alive属性，
+            //  而这个窗口出来的目前没有。
         }
     }
 
@@ -231,5 +308,20 @@ namespace AutoTicket
         /// 来自更改
         /// </summary>
         If_modify_since = 2
+    }
+
+    /// <summary>
+    /// 根据需要写 cookie 而不是每次都写
+    /// </summary>
+    public enum CookieStatus
+    { 
+        /// <summary>
+        /// 默认不做
+        /// </summary>
+        Default = 0,
+        /// <summary>
+        /// 回发了 cookie
+        /// </summary>
+        ResponseSetCookie = 1
     }
 }

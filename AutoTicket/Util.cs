@@ -137,7 +137,7 @@ namespace AutoTicket
             //        foreach (Cookie c in colCookies) lstCookies.Add(c);
             //}
 
-
+            BugFix_CookieDomain(cookies);
 
             Hashtable table = (Hashtable)cookies.GetType().InvokeMember("m_domainTable",
                                                                          BindingFlags.NonPublic |
@@ -151,15 +151,39 @@ namespace AutoTicket
 
             foreach (var key in table.Keys)
             {
-                foreach (Cookie cookie in cookies.GetCookies(new Uri(string.Format("{0}", 
-                    key))))
+                if (!key.ToString().StartsWith("."))
                 {
-                    if (cookie.Name.Trim() == cookieName.Trim()) return true;
-                    //Console.WriteLine("Name = {0} ; Value = {1} ; Domain = {2}", cookie.Name, cookie.Value,
-                    //                  cookie.Domain);
+                    foreach (Cookie cookie in cookies.GetCookies(new Uri(string.Format("https://{0}",
+                        key))))
+                    {
+                        if (cookie.Name.Trim() == cookieName.Trim()) return true;
+                        //Console.WriteLine("Name = {0} ; Value = {1} ; Domain = {2}", cookie.Name, cookie.Value,
+                        //                  cookie.Domain);
+                    }
                 }
             }
             return false;
+        }
+
+        public static void BugFix_CookieDomain(CookieContainer cookieContainer)
+        {
+            Hashtable table = (Hashtable)cookieContainer.GetType().InvokeMember("m_domainTable",
+            System.Reflection.BindingFlags.NonPublic |
+            System.Reflection.BindingFlags.GetField |
+            System.Reflection.BindingFlags.Instance,
+            null,
+            cookieContainer,
+            new object[] { });
+            ArrayList keys = new ArrayList(table.Keys);
+            foreach (string keyObj in keys)
+            {
+                string key = (keyObj as string);
+                if (key[0] == '.')
+                {
+                    string newKey = key.Remove(0, 1);
+                    table[newKey] = table[keyObj];
+                }
+            }
         }
     }
 }
