@@ -21,7 +21,7 @@ namespace AutoTicket
         public static string userAgent = "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36";
         public static string referer = "https://kyfw.12306.cn/";
         public static CookieContainer _12306Cookies = new CookieContainer();
-        private static bool UserProxy = true; // 公司网络有时候要开启代理
+        private static bool UserProxy = false; // 公司网络有时候要开启代理
 
         /// <summary>
         /// 后续提交步骤所需要的令牌
@@ -37,6 +37,7 @@ namespace AutoTicket
         /// <returns></returns>
         public static string PostWebContent(string url, CookieContainer cookie, string param, PostParamSet postParam = PostParamSet.Normal)
         {
+            Util.MethodToAccessSSL();
             byte[] bs = Encoding.ASCII.GetBytes(param);
             var httpWebRequest = (HttpWebRequest)HttpWebRequest.Create(url);
             httpWebRequest.CookieContainer = cookie;
@@ -44,6 +45,8 @@ namespace AutoTicket
             httpWebRequest.Accept = accept;
             httpWebRequest.UserAgent = userAgent;
             httpWebRequest.Method = "POST";
+            httpWebRequest.KeepAlive = true;
+            httpWebRequest.Host = "kyfw.12306.cn";
             httpWebRequest.Headers.Add("X-Requested-With", "XMLHttpRequest");
             //httpWebRequest.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip, deflate");
             //httpWebRequest.Headers.Add(HttpRequestHeader.AcceptLanguage, "zh-cn");
@@ -93,6 +96,7 @@ namespace AutoTicket
         /// <returns></returns>
         public static string GetWebContent(string url, CookieContainer cookie)
         {
+            Util.MethodToAccessSSL();
             var httpWebRequest = (HttpWebRequest)HttpWebRequest.Create(url);
             httpWebRequest.ContentType = contentType;
             httpWebRequest.Referer = referer;
@@ -170,17 +174,28 @@ namespace AutoTicket
                     Match match = Regex.Match(singleCookie, "(.*?)=(.*?);");
                     if (match.Captures.Count == 0)
                         continue;
-                    _12306Cookies.Add(
-                        new Cookie(
+                    
+                    //if(Util.GetAllCookies(_12306Cookies).Where(m=> m.Name == match.Groups[1].ToString()).Count() == 0)
+                    //{
+                    if(!_12306Cookies.CookieContainsValueName(match.Groups[1].ToString()))
+                    { 
+                        _12306Cookies.Add(
+                            new Cookie(
                             match.Groups[1].ToString(),
                             match.Groups[2].ToString(),
                             path,
                             request.Host.Split(':')[0]));
-                    response.Cookies.Add(new Cookie(
+                    }
+                    //}
+                    
+                    if(response.Cookies[match.Groups[1].ToString()] == null)
+                    { 
+                        response.Cookies.Add(new Cookie(
                             match.Groups[1].ToString(),
                             match.Groups[2].ToString(),
                             path,
                             request.Host.Split(':')[0]));
+                    }
                 }
             }
         }

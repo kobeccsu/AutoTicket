@@ -1,14 +1,18 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Net;
+using System.Net.Security;
 using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace AutoTicket
 {
-    public class Util
+    public static class Util
     {
         public static void ClassToDataRow<T>(DataTable table, T classObject) where T : class
         {
@@ -82,6 +86,80 @@ namespace AutoTicket
                 }
             }
             return sb.ToString();
+        }
+
+        ///
+        /// 使用WebRequest?接之前?用此方法就可以了.
+        ///
+        public static void MethodToAccessSSL()
+        {
+            // 
+            ServicePointManager.ServerCertificateValidationCallback =
+                 new RemoteCertificateValidationCallback(ValidateServerCertificate);
+            //WebRequest myRequest = WebRequest.Create(url); 
+        }
+
+        // The following method is invoked by the RemoteCertificateValidationDelegate.
+        public static bool ValidateServerCertificate(
+            object sender,
+            X509Certificate certificate,
+            X509Chain chain,
+            SslPolicyErrors sslPolicyErrors)
+        {
+            if (sslPolicyErrors == SslPolicyErrors.None)
+                return true;
+
+            Console.WriteLine("Certificate error: {0}", sslPolicyErrors);
+
+            // Do not allow this client to communicate with unauthenticated servers.
+            return true;
+        }
+
+        /// <summary>
+        /// 遍历CookieContainer
+        /// </summary>
+        /// <param name="cc"></param>
+        /// <returns></returns>
+        public static bool CookieContainsValueName(this CookieContainer cookies, string cookieName)
+        {
+            //List<Cookie> lstCookies = new List<Cookie>();
+
+            //Hashtable table = (Hashtable)cc.GetType().InvokeMember("m_domainTable",
+            //    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.GetField |
+            //    System.Reflection.BindingFlags.Instance, null, cc, new object[] { });
+
+            //foreach (object pathList in table.Values)
+            //{
+            //    SortedList lstCookieCol = (SortedList)pathList.GetType().InvokeMember("m_list",
+            //        System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.GetField
+            //        | System.Reflection.BindingFlags.Instance, null, pathList, new object[] { });
+            //    foreach (CookieCollection colCookies in lstCookieCol.Values)
+            //        foreach (Cookie c in colCookies) lstCookies.Add(c);
+            //}
+
+
+
+            Hashtable table = (Hashtable)cookies.GetType().InvokeMember("m_domainTable",
+                                                                         BindingFlags.NonPublic |
+                                                                         BindingFlags.GetField |
+                                                                         BindingFlags.Instance,
+                                                                         null,
+                                                                         cookies,
+                                                                         new object[] { });
+
+
+
+            foreach (var key in table.Keys)
+            {
+                foreach (Cookie cookie in cookies.GetCookies(new Uri(string.Format("{0}", 
+                    key))))
+                {
+                    if (cookie.Name.Trim() == cookieName.Trim()) return true;
+                    //Console.WriteLine("Name = {0} ; Value = {1} ; Domain = {2}", cookie.Name, cookie.Value,
+                    //                  cookie.Domain);
+                }
+            }
+            return false;
         }
     }
 }

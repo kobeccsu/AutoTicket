@@ -61,10 +61,10 @@ namespace AutoTicket
         /// </summary>
         public static string ChooseTicketIntoLastStep()
         {
-            var param = "secretStr=" + "MjAxNS0xMi0xOCMwMCNHMTAxOCMwMjo1MCMxNToxNSM2aTAwMEcxMDE4MDIjSU9RI0hWUSMxODowNSPmt7HlnLPljJcj6KGh6Ziz5LicIzAxIzA3I08wMzE4NTAxMTdNMDQ4ODUwMDQwOTA5NjM1MDAwNCNROSMxNDUwMzM1MDAwODczIzE0NDUzMDI4MDAwMDAjMjBBQ0E5OTMxRjY0QTFCNTBFMDM0RjQzRTNDODQ5QUE1QUE2QjhEQjI4MTEyNTBFQjdDNDU1MDM%3D"
+            var param = "secretStr=" + "MjAxNS0xMi0yMSMwMCNHMTAxOCMwMjo1MCMxNToxNSM2aTAwMEcxMDE4MDIjSU9RI0hWUSMxODowNSPmt7HlnLPljJcj6KGh6Ziz5LicIzAxIzA3I08wMzE4NTA0MDhNMDQ4ODUwMDc5OTA5NjM1MDAwMyNROSMxNDUwNTk3NDcyMjAwIzE0NDU1NjIwMDAwMDAjQkJFRUY4OUQyODdDQ0RBOTYyMTJDQUI2NkQwNzRBOEYzRDVBQ0YzMzgyQTc2MEJDQ0FCOTk5M0I="
                 + "&train_date=" + "2015-12-21" +
                 "&back_train_date=" + "2015-12-20" + "&tour_flag=dc&purpose_codes=ADULT&query_from_station_name="
-                + WebUtility.UrlEncode("深圳") + "&query_to_station_name=" + WebUtility.UrlEncode("衡阳") + "&undefined=";
+                + "深圳" + "&query_to_station_name=" + "衡阳" + "&undefined=";
 
             HttpWebRequestExtension.referer = "https://kyfw.12306.cn/otn/leftTicket/init";
             HttpWebRequestExtension.contentType = "application/json;charset=UTF-8";
@@ -94,7 +94,8 @@ namespace AutoTicket
         public static string LastCheckRandCode(string randCode)
         {
             HttpWebRequestExtension.contentType = "application/x-www-form-urlencoded; charset=UTF-8";
-            var result = HttpWebRequestExtension.PostWebContent(TrainUrlConstant.LastCheckRandCode, HttpWebRequestExtension._12306Cookies, "randCode=" + randCode +
+            var result = HttpWebRequestExtension.PostWebContent(TrainUrlConstant.LastCheckRandCode, HttpWebRequestExtension._12306Cookies, 
+                "randCode=" + WebUtility.UrlEncode(randCode) +
                 "&rand=randp&_json_att=" + "&REPEAT_SUBMIT_TOKEN=" + HttpWebRequestExtension.TOKEN, PostParamSet.NoCache);
             return result;
         }
@@ -112,10 +113,10 @@ namespace AutoTicket
             var checkOrderResult = HttpWebRequestExtension.PostWebContent(TrainUrlConstant.CheckOrderInfo, HttpWebRequestExtension._12306Cookies,
                 "cancel_flag=2" +
         "&bed_level_order_num=000000000000000000000000000000" +
-        "&passengerTicketStr=" + Util.Escape("O,0,1,周磊,1,430403198512142019,15820752123,N_O,0,1,何昭慧,1,430482198612030060,13420996107,N") +
-        "&oldPassengerStr=" + Util.Escape("周磊,1,430403198512142019,1_何昭慧,1,430482198612030060,1_") +
+        "&passengerTicketStr=" + WebUtility.UrlEncode("O,0,1,周磊,1,430403198512142019,15820752123,N_O,0,1,何昭慧,1,430482198612030060,13420996107,N") +
+        "&oldPassengerStr=" + WebUtility.UrlEncode("周磊,1,430403198512142019,1_何昭慧,1,430482198612030060,1_") +
         "&tour_flag=dc" +
-        "&randCode=" + randCode +
+        "&randCode=" + WebUtility.UrlEncode(randCode) +
         "&_json_att=" +
         "&REPEAT_SUBMIT_TOKEN=" + HttpWebRequestExtension.TOKEN, PostParamSet.NoCache);
             return checkOrderResult;

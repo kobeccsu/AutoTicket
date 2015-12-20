@@ -17,43 +17,16 @@ namespace AutoTicket
 {
     public partial class Form1 : Form
     {
-        private static string FirstLoginGetCookieUrl = "https://kyfw.12306.cn/otn/resources/merged/common_js.js?scriptVersion=1.8840";
-
         public Form1()
         {
             InitializeComponent();
         }
 
-        ///
-        /// 使用WebRequest?接之前?用此方法就可以了.
-        ///
-        private void MethodToAccessSSL()
-        {
-            // 
-            ServicePointManager.ServerCertificateValidationCallback =
-                 new RemoteCertificateValidationCallback(ValidateServerCertificate);
-            //WebRequest myRequest = WebRequest.Create(url); 
-        }
-
-        // The following method is invoked by the RemoteCertificateValidationDelegate.
-        public static bool ValidateServerCertificate(
-            object sender,
-            X509Certificate certificate,
-            X509Chain chain,
-            SslPolicyErrors sslPolicyErrors)
-        {
-            if (sslPolicyErrors == SslPolicyErrors.None)
-                return true;
-
-            Console.WriteLine("Certificate error: {0}", sslPolicyErrors);
-
-            // Do not allow this client to communicate with unauthenticated servers.
-            return true;
-        }
+       
 
         private void button1_Click(object sender, EventArgs e)
         {
-            this.MethodToAccessSSL();
+            //this.MethodToAccessSSL();
 
             string URL = "https://dynamic.12306.cn/otsweb/passCodeAction.do?rand=lrand";
             HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(URL);
@@ -87,7 +60,7 @@ namespace AutoTicket
 
         private string login()
         {
-            this.MethodToAccessSSL();
+            //this.MethodToAccessSSL();
 
             string url = "https://dynamic.12306.cn/otsweb/loginAction.do?method=login";
             HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
