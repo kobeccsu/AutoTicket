@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CDNReset.cs" />
+    <Compile Include="CertPolicy.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -94,6 +95,7 @@
     <EmbeddedResource Include="RobTicket.resx">
       <DependentUpon>RobTicket.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="Plugin\12306.cer" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

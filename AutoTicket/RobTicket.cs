@@ -29,8 +29,9 @@ namespace AutoTicket
             var result = TicketBiz.LastCheckRandCode(txtRandCode.Text);
             this.richTextBox1.Text += "提交验证码后结果:" + result;
 
-            var checkOrderResult = TicketBiz.FinalSubmitOrder(txtRandCode.Text);
-            this.richTextBox1.Text += Environment.NewLine + "提交订单后结果:" + checkOrderResult;
+            HttpWebRequestExtension.showText = this.richTextBox1;
+            this.richTextBox1.Text += Environment.NewLine + "提交订单后结果:" + TicketBiz.FinalSubmitOrder(txtRandCode.Text);
+            //this.richTextBox1.Text += Environment.NewLine + "提交订单后结果:";// +checkOrderResult;
         }
 
         /// <summary>

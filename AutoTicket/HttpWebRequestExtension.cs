@@ -5,10 +5,13 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Cache;
+using System.Net.Security;
 using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace AutoTicket
 {
@@ -23,6 +26,8 @@ namespace AutoTicket
         public static string referer = "https://kyfw.12306.cn/";
         public static CookieContainer _12306Cookies = new CookieContainer();
         private static bool UserProxy = false; // 公司网络有时候要开启代理
+
+        public static RichTextBox showText = null;
 
         /// <summary>
         /// 后续提交步骤所需要的令牌
@@ -39,9 +44,13 @@ namespace AutoTicket
         public static string PostWebContent(string url, CookieContainer cookie, string param, PostParamSet postParam = PostParamSet.Normal, 
             CookieStatus cookeWrite = CookieStatus.Default)
         {
-            Util.MethodToAccessSSL();
+            ServicePointManager.ServerCertificateValidationCallback =
+                 new RemoteCertificateValidationCallback(Util.ValidateServerCertificate);
+            X509Certificate Cert = X509Certificate.CreateFromCertFile("E:\\MyCode\\AutoTicket\\AutoTicket\\Plugin\\12306.cer"); //证书存放的绝对路径
+
             byte[] bs = Encoding.ASCII.GetBytes(param);
             var httpWebRequest = (HttpWebRequest)HttpWebRequest.Create(url);
+            httpWebRequest.ClientCertificates.Add(Cert);
             httpWebRequest.CookieContainer = cookie;
             httpWebRequest.ContentType = contentType;
             httpWebRequest.Accept = accept;
@@ -231,9 +240,10 @@ namespace AutoTicket
             return string.Empty;
         }
 
-        HttpWebRequest httpWebRequest = null;
+        static HttpWebRequest httpWebRequest = null;
+        //public static string asyncResult = "";
 
-        void StartWebRequest(string url, CookieContainer cookie, string param, PostParamSet postParam = PostParamSet.Normal,
+        public static void StartWebRequest(string url, CookieContainer cookie, string param, PostParamSet postParam = PostParamSet.Normal,
             CookieStatus cookeWrite = CookieStatus.Default)
         {
             Util.MethodToAccessSSL();
@@ -247,6 +257,7 @@ namespace AutoTicket
             httpWebRequest.KeepAlive = true;
             httpWebRequest.Host = "kyfw.12306.cn";
             httpWebRequest.Headers.Add("X-Requested-With", "XMLHttpRequest");
+            httpWebRequest.ProtocolVersion = HttpVersion.Version11;
             //httpWebRequest.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip, deflate");
             //httpWebRequest.Headers.Add(HttpRequestHeader.AcceptLanguage, "zh-cn");
 
@@ -267,10 +278,14 @@ namespace AutoTicket
             }
             httpWebRequest.ContentLength = bs.Length;
             httpWebRequest.ServicePoint.Expect100Continue = false;
+            using (Stream reqStream = httpWebRequest.GetRequestStream())
+            {
+                reqStream.Write(bs, 0, bs.Length);
+            }
             httpWebRequest.BeginGetResponse(new AsyncCallback(FinishWebRequest), null);
         }
 
-        void FinishWebRequest(IAsyncResult result)
+        public static void FinishWebRequest(IAsyncResult result)
         {
             WebResponse httpWebResponse = httpWebRequest.EndGetResponse(result);
             //if (cookeWrite == CookieStatus.ResponseSetCookie)
@@ -287,6 +302,8 @@ namespace AutoTicket
             httpWebRequest.Abort();
             httpWebResponse.Close();
 
+            //asyncResult = html;
+            showText.Text += Environment.NewLine + "提交订单后结果:" + html;
             //return html;
             // todo: 目前就是 checkorder 这个地方卡住，两个地方与别的地方有区别，第一是在 jquery 中是 async 提交。第二是，观察正确的都有一个keep-alive属性，
             //  而这个窗口出来的目前没有。
