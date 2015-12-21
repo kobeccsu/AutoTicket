@@ -200,24 +200,29 @@ namespace AutoTicket
                     
                     //if(Util.GetAllCookies(_12306Cookies).Where(m=> m.Name == match.Groups[1].ToString()).Count() == 0)
                     //{
-                    if(!_12306Cookies.CookieContainsValueName(match.Groups[1].ToString()))
-                    { 
-                        _12306Cookies.Add(
-                            new Cookie(
-                            match.Groups[1].ToString(),
-                            match.Groups[2].ToString(),
-                            path,
-                            request.Host.Split(':')[0]));
+                    if (!_12306Cookies.CookieContainsValueName(match.Groups[1].ToString()))
+                    {
+                        Cookie ck = new Cookie(match.Groups[1].ToString(), match.Groups[2].ToString());
+                        ck.Path = path;
+                        ck.Domain = request.Host.Split(':')[0];
+                        _12306Cookies.Add(new Uri("https://kyfw.12306.cn" + path), ck);
+                    }
+                    else
+                    {
+                        // 还是不能直接操作 cookiecontainer 非常不方便
+                        CookieCollection cool = new CookieCollection();
+
                     }
                     //}
                     
+                    // 其实我这里静态变量已经记住了就可以了，你这里回不回发我 winform 都收不到
                     //if(response.Cookies[match.Groups[1].ToString()] == null)
                     //{ 
-                        response.Cookies.Add(new Cookie(
-                            match.Groups[1].ToString(),
-                            match.Groups[2].ToString(),
-                            path,
-                            request.Host.Split(':')[0]));
+                        //response.Cookies.Add(new Cookie(
+                        //    match.Groups[1].ToString(),
+                        //    match.Groups[2].ToString(),
+                        //    path,
+                        //    request.Host.Split(':')[0]));
                     //}
                 }
             }
