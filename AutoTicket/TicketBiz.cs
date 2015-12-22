@@ -62,8 +62,8 @@ namespace AutoTicket
         public static string ChooseTicketIntoLastStep()
         {
             var param = "secretStr=" + "MjAxNS0xMi0yMSMwMCNHMTAxOCMwMjo1MCMxNToxNSM2aTAwMEcxMDE4MDIjSU9RI0hWUSMxODowNSPmt7HlnLPljJcj6KGh6Ziz5LicIzAxIzA3I08wMzE4NTA0MDhNMDQ4ODUwMDc5OTA5NjM1MDAwMyNROSMxNDUwNTk3NDcyMjAwIzE0NDU1NjIwMDAwMDAjQkJFRUY4OUQyODdDQ0RBOTYyMTJDQUI2NkQwNzRBOEYzRDVBQ0YzMzgyQTc2MEJDQ0FCOTk5M0I="
-                + "&train_date=" + "2015-12-22" +
-                "&back_train_date=" + "2015-12-21" + "&tour_flag=dc&purpose_codes=ADULT&query_from_station_name="
+                + "&train_date=" + "2015-12-23" +
+                "&back_train_date=" + "2015-12-22" + "&tour_flag=dc&purpose_codes=ADULT&query_from_station_name="
                 + "深圳" + "&query_to_station_name=" + "衡阳" + "&undefined=";
 
             HttpWebRequestExtension.referer = "https://kyfw.12306.cn/otn/leftTicket/init";

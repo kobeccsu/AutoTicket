@@ -125,18 +125,45 @@ namespace AutoTicket
                         "/",
                         "kyfw.12306.cn"));
 
+            HttpWebRequestExtension.cookieList.Add(
+                "_jc_save_fromStation",
+                new Cookie(
+                        "_jc_save_fromStation",
+                        Util.Escape(cmbstartStation.Text + "," + cmbstartStation.SelectedValue),
+                        "/",
+                        "kyfw.12306.cn")
+                );
+
             HttpWebRequestExtension._12306Cookies.Add(
                         new Cookie(
                             "_jc_save_toStation",
                             Util.Escape(cmbendStation.Text + "," + cmbendStation.SelectedValue),
                             "/",
                             "kyfw.12306.cn"));
+            HttpWebRequestExtension.cookieList.Add("_jc_save_toStation",
+                new Cookie(
+                            "_jc_save_toStation",
+                            Util.Escape(cmbendStation.Text + "," + cmbendStation.SelectedValue),
+                            "/",
+                            "kyfw.12306.cn")
+                );
+
             HttpWebRequestExtension._12306Cookies.Add(
                         new Cookie(
                             "_jc_save_fromDate",
                             dtpTrainDate.Value.ToString("yyyy-MM-dd"),
                             "/",
                             "kyfw.12306.cn"));
+
+            HttpWebRequestExtension.cookieList.Add("_jc_save_fromDate",
+                new Cookie(
+                            "_jc_save_fromDate",
+                            dtpTrainDate.Value.ToString("yyyy-MM-dd"),
+                            "/",
+                            "kyfw.12306.cn")
+            );
+
+
             HttpWebRequestExtension._12306Cookies.Add(
                         new Cookie(
                             "_jc_save_toDate",
@@ -144,12 +171,28 @@ namespace AutoTicket
                             "/",
                            "kyfw.12306.cn"));
 
+            HttpWebRequestExtension.cookieList.Add("_jc_save_toDate",
+                new Cookie(
+                            "_jc_save_toDate",
+                            dtpTrainDate.Value.AddDays(-1).ToString("yyyy-MM-dd"),
+                            "/",
+                           "kyfw.12306.cn")
+            );
+
             HttpWebRequestExtension._12306Cookies.Add(
                     new Cookie(
                     "_jc_save_wfdc_flag",
                     "dc",
                     "/",
                     "kyfw.12306.cn"));
+
+            HttpWebRequestExtension.cookieList.Add("_jc_save_wfdc_flag",
+                 new Cookie(
+                    "_jc_save_wfdc_flag",
+                    "dc",
+                    "/",
+                    "kyfw.12306.cn")
+            );
 
         }
 

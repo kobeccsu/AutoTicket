@@ -29,6 +29,8 @@ namespace AutoTicket
 
         public static RichTextBox showText = null;
 
+        public static Dictionary<string, Cookie> cookieList = new Dictionary<string, Cookie>();
+
         /// <summary>
         /// 后续提交步骤所需要的令牌
         /// </summary>
@@ -59,6 +61,8 @@ namespace AutoTicket
             httpWebRequest.KeepAlive = true;
             httpWebRequest.Host = "kyfw.12306.cn";
             httpWebRequest.Headers.Add("X-Requested-With", "XMLHttpRequest");
+            httpWebRequest.Timeout = 60000;
+
             //httpWebRequest.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip, deflate");
             //httpWebRequest.Headers.Add(HttpRequestHeader.AcceptLanguage, "zh-cn");
 
@@ -77,12 +81,12 @@ namespace AutoTicket
             {
                 httpWebRequest.Proxy = new WebProxy("127.0.0.1", 8087); // 由于公司 ip 被封，用了google 代理 
             }
-            
-            httpWebRequest.UnsafeAuthenticatedConnectionSharing = true;
+
+            httpWebRequest.AllowAutoRedirect = true;
             httpWebRequest.ServicePoint.ConnectionLimit = int.MaxValue;
-            httpWebRequest.ServicePoint.UseNagleAlgorithm = false;
             httpWebRequest.ContentLength = bs.Length;
             httpWebRequest.ServicePoint.Expect100Continue = false;
+            httpWebRequest.ProtocolVersion = HttpVersion.Version10; // 如果设置了这一句 反而有 keep-alive 了
             //httpWebRequest.Connection = "Keep-Alive";
 
             using (Stream reqStream = httpWebRequest.GetRequestStream())
@@ -125,6 +129,7 @@ namespace AutoTicket
             httpWebRequest.UserAgent = userAgent;
             httpWebRequest.Method = "GET";
             httpWebRequest.KeepAlive = true;
+            
             httpWebRequest.CookieContainer = cookie;
             if (UserProxy)
             {
@@ -156,6 +161,7 @@ namespace AutoTicket
         /// <returns></returns>
         public static Stream GetWebImage(string url, CookieContainer cookie)
         {
+            Util.MethodToAccessSSL();
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.Referer = referer;
             request.UserAgent = userAgent;
@@ -200,19 +206,32 @@ namespace AutoTicket
                     
                     //if(Util.GetAllCookies(_12306Cookies).Where(m=> m.Name == match.Groups[1].ToString()).Count() == 0)
                     //{
-                    if (!_12306Cookies.CookieContainsValueName(match.Groups[1].ToString()))
-                    {
-                        Cookie ck = new Cookie(match.Groups[1].ToString(), match.Groups[2].ToString());
-                        ck.Path = path;
-                        ck.Domain = request.Host.Split(':')[0];
-                        _12306Cookies.Add(new Uri("https://kyfw.12306.cn" + path), ck);
-                    }
-                    else
-                    {
-                        // 还是不能直接操作 cookiecontainer 非常不方便
-                        CookieCollection cool = new CookieCollection();
+                    //if (!_12306Cookies.CookieContainsValueName(match.Groups[1].ToString()))
+                    //{
+                    
+                    // 为了保证没有重复 cookie
+                    cookieList.Remove(match.Groups[1].ToString());
+                    cookieList.Add(match.Groups[1].ToString(),
+                        new Cookie(
+                            match.Groups[1].ToString(),
+                            match.Groups[2].ToString(),
+                            path,
+                            request.Host.Split(':')[0])
+                    );
+                        
 
-                    }
+
+                        //Cookie ck = new Cookie(match.Groups[1].ToString(), match.Groups[2].ToString());
+                        //ck.Path = path;
+                        //ck.Domain = request.Host.Split(':')[0];
+                        //_12306Cookies.Add(new Uri("https://kyfw.12306.cn" + path), ck);
+                    //}
+                    //else
+                    //{
+                    //    // 还是不能直接操作 cookiecontainer 非常不方便
+                    //    CookieCollection cool = new CookieCollection();
+
+                    //}
                     //}
                     
                     // 其实我这里静态变量已经记住了就可以了，你这里回不回发我 winform 都收不到
@@ -225,6 +244,11 @@ namespace AutoTicket
                         //    request.Host.Split(':')[0]));
                     //}
                 }
+            }
+            _12306Cookies = new CookieContainer();
+            foreach (Cookie item in cookieList.Values)
+            {
+                _12306Cookies.Add(new Uri("https://kyfw.12306.cn" + item.Path), item);
             }
         }
 
