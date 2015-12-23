@@ -50,7 +50,7 @@ namespace AutoTicket
                  new RemoteCertificateValidationCallback(Util.ValidateServerCertificate);
             //X509Certificate Cert = X509Certificate.CreateFromCertFile("E:\\MyCode\\AutoTicket\\AutoTicket\\Plugin\\12306.cer"); //证书存放的绝对路径
 
-            byte[] bs = Encoding.ASCII.GetBytes(param);
+            byte[] bs = Encoding.UTF8.GetBytes(param);
             var httpWebRequest = (HttpWebRequest)HttpWebRequest.Create(url);
             //httpWebRequest.ClientCertificates.Add(Cert);
             httpWebRequest.CookieContainer = cookie;
@@ -62,7 +62,6 @@ namespace AutoTicket
             httpWebRequest.Host = "kyfw.12306.cn";
             httpWebRequest.Headers.Add("X-Requested-With", "XMLHttpRequest");
             httpWebRequest.Timeout = 60000;
-
             //httpWebRequest.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip, deflate");
             //httpWebRequest.Headers.Add(HttpRequestHeader.AcceptLanguage, "zh-cn");
 

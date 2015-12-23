@@ -222,5 +222,17 @@ namespace AutoTicket
         {
             //this.lblCDNSite.Text = CDNReset.GetCDN();
         }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            var senderGrid = (DataGridView)sender;
+
+            if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn &&
+                e.RowIndex >= 0)
+            {
+                TicketBiz.secretStr = dataGridView1.Rows[e.RowIndex].Cells[15].Value.ToString();
+                //TODO - Button Clicked - Execute Code Here
+            }
+        }
     }
 }

@@ -10,6 +10,11 @@ namespace AutoTicket
     public class TicketBiz
     {
         /// <summary>
+        /// 选中车次的一个码
+        /// </summary>
+        public static string secretStr = "";
+
+        /// <summary>
         /// 首次登陆检查验证码
         /// </summary>
         /// <returns></returns>
@@ -62,10 +67,10 @@ namespace AutoTicket
         public static string ChooseTicketIntoLastStep()
         {
             // 这里这个码是动态生成的，不一样
-            var param = "secretStr=" + "MjAxNS0xMi0yNCMwMCNHMTAxOCMwMjo1MCMxNToxNSM2aTAwMEcxMDE4MDIjSU9RI0hWUSMxODowNSPmt7HlnLPljJcj6KGh6Ziz5LicIzAxIzA3I08wMDAwMDAyNzhNMDAwMDAwMDczOTAwMDAwMDAwNCNROSMxNDUwODU1MDgzMDUwIzE0NDU4MjEyMDAwMDAjNjIwQkIzNTNGMjNERTcwQjFBQjVGNjE5QjMyOUEyMUZGOUJCRDU0RjI3ODVBQkY3Rjc4MTdGRDk%3D"
+            var param = "secretStr=" + secretStr
                 + "&train_date=" + "2015-12-24" +
                 "&back_train_date=" + "2015-12-23" + "&tour_flag=dc&purpose_codes=ADULT&query_from_station_name="
-                + WebUtility.UrlEncode("深圳") + "&query_to_station_name=" + WebUtility.UrlEncode("衡阳") + "&undefined=";
+                + "深圳" + "&query_to_station_name=" + "衡阳" + "&undefined=";
 
             HttpWebRequestExtension.referer = "https://kyfw.12306.cn/otn/leftTicket/init";
             HttpWebRequestExtension.contentType = "application/x-www-form-urlencoded; charset=UTF-8";
