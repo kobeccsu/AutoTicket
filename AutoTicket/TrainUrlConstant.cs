@@ -113,30 +113,31 @@ namespace AutoTicket
         /// <summary>
         /// 获取排队队列
         /// Accept:application/json, text/javascript, */*; q=0.01
-        //Accept-Encoding:gzip, deflate
-        //Accept-Language:en,zh-CN;q=0.8,zh;q=0.6
-        //Connection:keep-alive
-        //Content-Length:332
-        //Content-Type:application/x-www-form-urlencoded; charset=UTF-8
-        //Cookie:JSESSIONID=0A02F00CC4F7BF51B50EC5867546A4837002FE4C1E; __NRF=F733ABEF9C97F7315330AC6579349EA1; BIGipServerotn=217055754.50210.0000; _jc_save_showIns=true; _jc_save_fromStation=%u6DF1%u5733%2CSZQ; _jc_save_toStation=%u8861%u9633%2CHYQ; _jc_save_fromDate=2015-12-10; _jc_save_toDate=2015-12-09; _jc_save_wfdc_flag=dc; current_captcha_type=Z
-        //Host:kyfw.12306.cn
-        //Origin:https://kyfw.12306.cn
-        //Referer:https://kyfw.12306.cn/otn/confirmPassenger/initDc
-        //User-Agent:Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36
-        //X-Requested-With:XMLHttpRequest
+        /// Accept-Encoding:gzip, deflate
+        /// Accept-Language:en,zh-CN;q=0.8,zh;q=0.6
+        /// Connection:keep-alive
+        /// Content-Length:332
+        /// Content-Type:application/x-www-form-urlencoded; charset=UTF-8
+        /// Cookie:JSESSIONID=0A02F00CC4F7BF51B50EC5867546A4837002FE4C1E; __NRF=F733ABEF9C97F7315330AC6579349EA1; BIGipServerotn=217055754.50210.0000; _jc_save_showIns=true; _jc_save_fromStation=%u6DF1%u5733%2CSZQ; _jc_save_toStation=%u8861%u9633%2CHYQ; _jc_save_fromDate=2015-12-10; _jc_save_toDate=2015-12-09; _jc_save_wfdc_flag=dc; current_captcha_type=Z
+        /// Host:kyfw.12306.cn
+        /// Origin:https://kyfw.12306.cn
+        /// Referer:https://kyfw.12306.cn/otn/confirmPassenger/initDc
+        /// User-Agent:Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36
+        /// X-Requested-With:XMLHttpRequest
         /// 
         /// 
         /// 
         /// train_date:Thu Dec 10 2015 00:00:00 GMT+0800 (中国标准时间)
-        //train_no:6i000G103200
-        //stationTrainCode:G1032
-        //seatType:O
-        //fromStationTelecode:IOQ
-        //toStationTelecode:HVQ
-        //leftTicket:O031850176M0488500119096350000
-        //purpose_codes:00
-        //_json_att:
-        //REPEAT_SUBMIT_TOKEN:b855408a6b161572be0ebed01beae572
+        /// train_no:6i000G103200
+        /// stationTrainCode:G1032
+        /// seatType:O
+        /// fromStationTelecode:IOQ
+        /// toStationTelecode:HVQ
+        /// leftTicket:O031850176M0488500119096350000
+        //             O000000450M0000000819000000004
+        /// purpose_codes:00
+        /// _json_att:
+        /// REPEAT_SUBMIT_TOKEN:b855408a6b161572be0ebed01beae572
         /// </summary>
         public const string GetQueueCount = "https://kyfw.12306.cn/otn/confirmPassenger/getQueueCount";
 

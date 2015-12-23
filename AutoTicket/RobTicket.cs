@@ -31,6 +31,8 @@ namespace AutoTicket
 
             HttpWebRequestExtension.showText = this.richTextBox1;
             this.richTextBox1.Text += Environment.NewLine + "提交订单后结果:" + TicketBiz.FinalSubmitOrder(txtRandCode.Text);
+
+            this.richTextBox1.Text += Environment.NewLine + "查看还剩多少张票:" + TicketBiz.GetQueueCount();
             //this.richTextBox1.Text += Environment.NewLine + "提交订单后结果:";// +checkOrderResult;
         }
 

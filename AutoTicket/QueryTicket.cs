@@ -231,7 +231,12 @@ namespace AutoTicket
                 e.RowIndex >= 0)
             {
                 TicketBiz.secretStr = dataGridView1.Rows[e.RowIndex].Cells[15].Value.ToString();
-                //TODO - Button Clicked - Execute Code Here
+                TicketBiz.stationTrainCode = dataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString();
+                TicketBiz.train_no = dataGridView1.Rows[e.RowIndex].Cells[16].Value.ToString();
+                TicketBiz.fromStationTelecode = this.cmbstartStation.SelectedValue.ToString();
+                TicketBiz.toStationTelecode = this.cmbendStation.SelectedValue.ToString();
+                TicketBiz.train_date = this.dtpTrainDate.Value.ToUniversalTime().ToString();
+                
             }
         }
     }

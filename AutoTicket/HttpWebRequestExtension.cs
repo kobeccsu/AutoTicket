@@ -268,6 +268,21 @@ namespace AutoTicket
             return string.Empty;
         }
 
+        /// <summary>
+        /// 截取 IniDc 页面中隐藏的值，用于提交票
+        /// </summary>
+        /// <param name="inputString"></param>
+        /// <returns></returns>
+        public static string GetLeftTicketStr(string inputString)
+        {
+            Match match = Regex.Match(inputString, "(?<='leftTicketStr':').*?(?=',)");
+            if (match.Success)
+            {
+                return match.Value;
+            }
+            return string.Empty;
+        }
+
         static HttpWebRequest httpWebRequest = null;
         //public static string asyncResult = "";
 

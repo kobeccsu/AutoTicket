@@ -15,6 +15,33 @@ namespace AutoTicket
         public static string secretStr = "";
 
         /// <summary>
+        /// 发车时间
+        /// </summary>
+        public static string train_date = "";
+
+        /// <summary>
+        /// 列车编号，并不是车次
+        /// </summary>
+        public static string train_no = "";
+        /// <summary>
+        /// 车次，如 G1018
+        /// </summary>
+        public static string stationTrainCode = "";
+
+        /// <summary>
+        /// 出发站
+        /// </summary>
+        public static string fromStationTelecode = "";
+        /// <summary>
+        /// 到达站编码如，HIQ
+        /// </summary>
+        public static string toStationTelecode = "";
+        /// <summary>
+        /// 页面中隐藏的一个值，和 token 的获取方式一样
+        /// </summary>
+        public static string leftTicket = "";
+
+        /// <summary>
         /// 首次登陆检查验证码
         /// </summary>
         /// <returns></returns>
@@ -85,6 +112,7 @@ namespace AutoTicket
         {
             var redirectInitDC = HttpWebRequestExtension.PostWebContent(TrainUrlConstant.InitDcPage, HttpWebRequestExtension._12306Cookies, "_json_att=");
             HttpWebRequestExtension.TOKEN = HttpWebRequestExtension.GetToken(redirectInitDC);
+            TicketBiz.leftTicket = HttpWebRequestExtension.GetLeftTicketStr(redirectInitDC);
 
             HttpWebRequestExtension.referer = "https://kyfw.12306.cn/otn/confirmPassenger/initDc";
             HttpWebRequestExtension.contentType = "application/x-www-form-urlencoded; charset=UTF-8";
@@ -125,6 +153,29 @@ namespace AutoTicket
         "&randCode=" + WebUtility.UrlEncode(randCode) +
         "&_json_att=" +
         "&REPEAT_SUBMIT_TOKEN=" + HttpWebRequestExtension.TOKEN, PostParamSet.NoCache);
+        }
+
+        /// <summary>
+        /// 获取剩余多少张票
+        /// </summary>
+        /// <returns></returns>
+        public static string GetQueueCount()
+        {
+            HttpWebRequestExtension.accept = "application/json, text/javascript, */*; q=0.01";
+            HttpWebRequestExtension.referer = "https://kyfw.12306.cn/otn/confirmPassenger/initDc";
+            HttpWebRequestExtension.contentType = "application/x-www-form-urlencoded; charset=UTF-8";
+            return HttpWebRequestExtension.PostWebContent(TrainUrlConstant.GetQueueCount, HttpWebRequestExtension._12306Cookies,
+                "train_date=" + train_date +
+                "&train_no=" + train_no +
+                "&stationTrainCode=" + stationTrainCode +
+                "&seatType=" + "O" + // 二等座，
+                "&fromStationTelecode=" + fromStationTelecode +
+                "&toStationTelecode=" + toStationTelecode +
+                "&leftTicket=" + leftTicket +
+                "&purpose_codes=" + "00" +
+                "&_json_att=" +
+                "&REPEAT_SUBMIT_TOKEN=" + HttpWebRequestExtension.TOKEN
+            );
         }
     }
 }

@@ -58,6 +58,7 @@
             this.rw_num = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.wz_num = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.secretStr = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.train_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -108,7 +109,7 @@
             // 
             this.dtpTrainDate.Location = new System.Drawing.Point(89, 72);
             this.dtpTrainDate.Name = "dtpTrainDate";
-            this.dtpTrainDate.Size = new System.Drawing.Size(121, 21);
+            this.dtpTrainDate.Size = new System.Drawing.Size(239, 21);
             this.dtpTrainDate.TabIndex = 5;
             // 
             // button1
@@ -181,7 +182,8 @@
             this.yw_num,
             this.rw_num,
             this.wz_num,
-            this.secretStr});
+            this.secretStr,
+            this.train_no});
             this.dataGridView1.Location = new System.Drawing.Point(26, 140);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowTemplate.Height = 23;
@@ -302,6 +304,12 @@
             this.secretStr.HeaderText = "序列号";
             this.secretStr.Name = "secretStr";
             // 
+            // train_no
+            // 
+            this.train_no.DataPropertyName = "train_no";
+            this.train_no.HeaderText = "列车编号";
+            this.train_no.Name = "train_no";
+            // 
             // QueryTicket
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -358,5 +366,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn rw_num;
         private System.Windows.Forms.DataGridViewTextBoxColumn wz_num;
         private System.Windows.Forms.DataGridViewTextBoxColumn secretStr;
+        private System.Windows.Forms.DataGridViewTextBoxColumn train_no;
     }
 }
