@@ -118,13 +118,14 @@ namespace AutoTicket
         /// </summary>
         private void SaveJCCookie()
         {
-            HttpWebRequestExtension._12306Cookies.Add(
-                    new Cookie(
-                        "_jc_save_fromStation",
-                        Util.Escape(cmbstartStation.Text + "," + cmbstartStation.SelectedValue),
-                        "/",
-                        "kyfw.12306.cn"));
+            //HttpWebRequestExtension._12306Cookies.Add(
+            //        new Cookie(
+            //            "_jc_save_fromStation",
+            //            Util.Escape(cmbstartStation.Text + "," + cmbstartStation.SelectedValue),
+            //            "/",
+            //            "kyfw.12306.cn"));
 
+            HttpWebRequestExtension.cookieList.Remove("_jc_save_fromStation");
             HttpWebRequestExtension.cookieList.Add(
                 "_jc_save_fromStation",
                 new Cookie(
@@ -134,12 +135,14 @@ namespace AutoTicket
                         "kyfw.12306.cn")
                 );
 
-            HttpWebRequestExtension._12306Cookies.Add(
-                        new Cookie(
-                            "_jc_save_toStation",
-                            Util.Escape(cmbendStation.Text + "," + cmbendStation.SelectedValue),
-                            "/",
-                            "kyfw.12306.cn"));
+            //HttpWebRequestExtension._12306Cookies.Add(
+            //            new Cookie(
+            //                "_jc_save_toStation",
+            //                Util.Escape(cmbendStation.Text + "," + cmbendStation.SelectedValue),
+            //                "/",
+            //                "kyfw.12306.cn"));
+
+            HttpWebRequestExtension.cookieList.Remove("_jc_save_toStation");
             HttpWebRequestExtension.cookieList.Add("_jc_save_toStation",
                 new Cookie(
                             "_jc_save_toStation",
@@ -148,13 +151,14 @@ namespace AutoTicket
                             "kyfw.12306.cn")
                 );
 
-            HttpWebRequestExtension._12306Cookies.Add(
-                        new Cookie(
-                            "_jc_save_fromDate",
-                            dtpTrainDate.Value.ToString("yyyy-MM-dd"),
-                            "/",
-                            "kyfw.12306.cn"));
+            //HttpWebRequestExtension._12306Cookies.Add(
+            //            new Cookie(
+            //                "_jc_save_fromDate",
+            //                dtpTrainDate.Value.ToString("yyyy-MM-dd"),
+            //                "/",
+            //                "kyfw.12306.cn"));
 
+            HttpWebRequestExtension.cookieList.Remove("_jc_save_fromDate");
             HttpWebRequestExtension.cookieList.Add("_jc_save_fromDate",
                 new Cookie(
                             "_jc_save_fromDate",
@@ -164,13 +168,14 @@ namespace AutoTicket
             );
 
 
-            HttpWebRequestExtension._12306Cookies.Add(
-                        new Cookie(
-                            "_jc_save_toDate",
-                            dtpTrainDate.Value.AddDays(-1).ToString("yyyy-MM-dd"),
-                            "/",
-                           "kyfw.12306.cn"));
+            //HttpWebRequestExtension._12306Cookies.Add(
+            //            new Cookie(
+            //                "_jc_save_toDate",
+            //                dtpTrainDate.Value.AddDays(-1).ToString("yyyy-MM-dd"),
+            //                "/",
+            //               "kyfw.12306.cn"));
 
+            HttpWebRequestExtension.cookieList.Remove("_jc_save_toDate");
             HttpWebRequestExtension.cookieList.Add("_jc_save_toDate",
                 new Cookie(
                             "_jc_save_toDate",
@@ -179,13 +184,14 @@ namespace AutoTicket
                            "kyfw.12306.cn")
             );
 
-            HttpWebRequestExtension._12306Cookies.Add(
-                    new Cookie(
-                    "_jc_save_wfdc_flag",
-                    "dc",
-                    "/",
-                    "kyfw.12306.cn"));
+            //HttpWebRequestExtension._12306Cookies.Add(
+            //        new Cookie(
+            //        "_jc_save_wfdc_flag",
+            //        "dc",
+            //        "/",
+            //        "kyfw.12306.cn"));
 
+            HttpWebRequestExtension.cookieList.Remove("_jc_save_wfdc_flag");
             HttpWebRequestExtension.cookieList.Add("_jc_save_wfdc_flag",
                  new Cookie(
                     "_jc_save_wfdc_flag",
@@ -194,6 +200,11 @@ namespace AutoTicket
                     "kyfw.12306.cn")
             );
 
+            HttpWebRequestExtension._12306Cookies = new CookieContainer();
+            foreach (Cookie item in HttpWebRequestExtension.cookieList.Values)
+            {
+                HttpWebRequestExtension._12306Cookies.Add(new Uri("https://kyfw.12306.cn" + item.Path), item);
+            }
         }
 
         // 刷出的列表选车次

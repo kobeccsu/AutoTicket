@@ -61,14 +61,15 @@ namespace AutoTicket
         /// </summary>
         public static string ChooseTicketIntoLastStep()
         {
-            var param = "secretStr=" + "MjAxNS0xMi0yMSMwMCNHMTAxOCMwMjo1MCMxNToxNSM2aTAwMEcxMDE4MDIjSU9RI0hWUSMxODowNSPmt7HlnLPljJcj6KGh6Ziz5LicIzAxIzA3I08wMzE4NTA0MDhNMDQ4ODUwMDc5OTA5NjM1MDAwMyNROSMxNDUwNTk3NDcyMjAwIzE0NDU1NjIwMDAwMDAjQkJFRUY4OUQyODdDQ0RBOTYyMTJDQUI2NkQwNzRBOEYzRDVBQ0YzMzgyQTc2MEJDQ0FCOTk5M0I="
-                + "&train_date=" + "2015-12-23" +
-                "&back_train_date=" + "2015-12-22" + "&tour_flag=dc&purpose_codes=ADULT&query_from_station_name="
-                + "深圳" + "&query_to_station_name=" + "衡阳" + "&undefined=";
+            // 这里这个码是动态生成的，不一样
+            var param = "secretStr=" + "MjAxNS0xMi0yNCMwMCNHMTAxOCMwMjo1MCMxNToxNSM2aTAwMEcxMDE4MDIjSU9RI0hWUSMxODowNSPmt7HlnLPljJcj6KGh6Ziz5LicIzAxIzA3I08wMDAwMDAyNzhNMDAwMDAwMDczOTAwMDAwMDAwNCNROSMxNDUwODU1MDgzMDUwIzE0NDU4MjEyMDAwMDAjNjIwQkIzNTNGMjNERTcwQjFBQjVGNjE5QjMyOUEyMUZGOUJCRDU0RjI3ODVBQkY3Rjc4MTdGRDk%3D"
+                + "&train_date=" + "2015-12-24" +
+                "&back_train_date=" + "2015-12-23" + "&tour_flag=dc&purpose_codes=ADULT&query_from_station_name="
+                + WebUtility.UrlEncode("深圳") + "&query_to_station_name=" + WebUtility.UrlEncode("衡阳") + "&undefined=";
 
             HttpWebRequestExtension.referer = "https://kyfw.12306.cn/otn/leftTicket/init";
-            HttpWebRequestExtension.contentType = "application/json;charset=UTF-8";
-            return HttpWebRequestExtension.PostWebContent(TrainUrlConstant.SubmitOrderPredicateUrl, HttpWebRequestExtension._12306Cookies, param);
+            HttpWebRequestExtension.contentType = "application/x-www-form-urlencoded; charset=UTF-8";
+            return HttpWebRequestExtension.PostWebContent(TrainUrlConstant.SubmitOrderPredicateUrl, HttpWebRequestExtension._12306Cookies, param, PostParamSet.NoCache);
         }
 
         /// <summary>

@@ -48,11 +48,11 @@ namespace AutoTicket
         {
             ServicePointManager.ServerCertificateValidationCallback =
                  new RemoteCertificateValidationCallback(Util.ValidateServerCertificate);
-            X509Certificate Cert = X509Certificate.CreateFromCertFile("E:\\MyCode\\AutoTicket\\AutoTicket\\Plugin\\12306.cer"); //证书存放的绝对路径
+            //X509Certificate Cert = X509Certificate.CreateFromCertFile("E:\\MyCode\\AutoTicket\\AutoTicket\\Plugin\\12306.cer"); //证书存放的绝对路径
 
             byte[] bs = Encoding.ASCII.GetBytes(param);
             var httpWebRequest = (HttpWebRequest)HttpWebRequest.Create(url);
-            httpWebRequest.ClientCertificates.Add(Cert);
+            //httpWebRequest.ClientCertificates.Add(Cert);
             httpWebRequest.CookieContainer = cookie;
             httpWebRequest.ContentType = contentType;
             httpWebRequest.Accept = accept;
