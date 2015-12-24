@@ -55,6 +55,10 @@ namespace AutoTicket
         /// </summary>
         public static string query_to_station_name = "";
 
+        public static string passengerTicketStr = "O,0,1,周磊,1,430403198512142019,15820752123,N_O,0,1,何昭慧,1,430482198612030060,13420996107,N_O,0,1,王满秀,1,430482196507180025,,N";
+
+        public static string oldPassengerStr = "周磊,1,430403198512142019,1_何昭慧,1,430482198612030060,1_王满秀,1,430482196507180025,1_";
+
         /// <summary>
         /// 首次登陆检查验证码
         /// </summary>
@@ -163,8 +167,8 @@ namespace AutoTicket
             return HttpWebRequestExtension.PostWebContent(TrainUrlConstant.CheckOrderInfo, HttpWebRequestExtension._12306Cookies,
                 "cancel_flag=2" +
         "&bed_level_order_num=000000000000000000000000000000" +
-        "&passengerTicketStr=" + WebUtility.UrlEncode("O,0,1,周磊,1,430403198512142019,15820752123,N_O,0,1,何昭慧,1,430482198612030060,13420996107,N") +
-        "&oldPassengerStr=" + WebUtility.UrlEncode("周磊,1,430403198512142019,1_何昭慧,1,430482198612030060,1_") +
+        "&passengerTicketStr=" + WebUtility.UrlEncode(passengerTicketStr) +
+        "&oldPassengerStr=" + WebUtility.UrlEncode(oldPassengerStr) +
         "&tour_flag=dc" +
         "&randCode=" + WebUtility.UrlEncode(randCode) +
         "&_json_att=" +
@@ -204,8 +208,8 @@ namespace AutoTicket
             HttpWebRequestExtension.referer = "https://kyfw.12306.cn/otn/confirmPassenger/initDc";
             HttpWebRequestExtension.contentType = "application/x-www-form-urlencoded; charset=UTF-8";
             return HttpWebRequestExtension.PostWebContent(TrainUrlConstant.ConfirmForSingleQueue, HttpWebRequestExtension._12306Cookies,
-                "passengerTicketStr=" + WebUtility.UrlEncode("O,0,1,周磊,1,430403198512142019,15820752123,N_O,0,1,何昭慧,1,430482198612030060,13420996107,N") +
-                "&oldPassengerStr=" + WebUtility.UrlEncode("周磊,1,430403198512142019,1_何昭慧,1,430482198612030060,1_") +
+                "passengerTicketStr=" + WebUtility.UrlEncode(passengerTicketStr) +
+                "&oldPassengerStr=" + WebUtility.UrlEncode(oldPassengerStr) +
                 "&randCode=" + WebUtility.UrlEncode(randCode) +
                 "&purpose_codes=00" +
                 "&key_check_isChange=" + key_check_isChange +
