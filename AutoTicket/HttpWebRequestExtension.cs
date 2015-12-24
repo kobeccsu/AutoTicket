@@ -128,8 +128,10 @@ namespace AutoTicket
             httpWebRequest.UserAgent = userAgent;
             httpWebRequest.Method = "GET";
             httpWebRequest.KeepAlive = true;
-            
+            httpWebRequest.KeepAlive = true;
+            httpWebRequest.ProtocolVersion = HttpVersion.Version10;
             httpWebRequest.CookieContainer = cookie;
+
             if (UserProxy)
             {
                 httpWebRequest.Proxy = new WebProxy("127.0.0.1", 8087); 
@@ -168,6 +170,7 @@ namespace AutoTicket
             request.CookieContainer = cookie;
             //request.ContentType = contentType;
             request.KeepAlive = true;
+            request.ProtocolVersion = HttpVersion.Version10;
             //request.UseDefaultCredentials = true;
 
             if (UserProxy)
