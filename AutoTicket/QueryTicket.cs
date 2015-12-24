@@ -75,6 +75,7 @@ namespace AutoTicket
         /// <param name="e"></param>
         private void button1_Click(object sender, EventArgs e)
         {
+            this.lblCDNSite.Text = CDNReset.GetCDN();
             this.richTextBox1.Text = "";
 
             var logUrl = string.Format(TrainUrlConstant.LogLeftTicketLog, dtpTrainDate.Value.ToString("yyyy-MM-dd"),
@@ -118,13 +119,6 @@ namespace AutoTicket
         /// </summary>
         private void SaveJCCookie()
         {
-            //HttpWebRequestExtension._12306Cookies.Add(
-            //        new Cookie(
-            //            "_jc_save_fromStation",
-            //            Util.Escape(cmbstartStation.Text + "," + cmbstartStation.SelectedValue),
-            //            "/",
-            //            "kyfw.12306.cn"));
-
             HttpWebRequestExtension.cookieList.Remove("_jc_save_fromStation");
             HttpWebRequestExtension.cookieList.Add(
                 "_jc_save_fromStation",
@@ -135,13 +129,6 @@ namespace AutoTicket
                         "kyfw.12306.cn")
                 );
 
-            //HttpWebRequestExtension._12306Cookies.Add(
-            //            new Cookie(
-            //                "_jc_save_toStation",
-            //                Util.Escape(cmbendStation.Text + "," + cmbendStation.SelectedValue),
-            //                "/",
-            //                "kyfw.12306.cn"));
-
             HttpWebRequestExtension.cookieList.Remove("_jc_save_toStation");
             HttpWebRequestExtension.cookieList.Add("_jc_save_toStation",
                 new Cookie(
@@ -150,13 +137,6 @@ namespace AutoTicket
                             "/",
                             "kyfw.12306.cn")
                 );
-
-            //HttpWebRequestExtension._12306Cookies.Add(
-            //            new Cookie(
-            //                "_jc_save_fromDate",
-            //                dtpTrainDate.Value.ToString("yyyy-MM-dd"),
-            //                "/",
-            //                "kyfw.12306.cn"));
 
             HttpWebRequestExtension.cookieList.Remove("_jc_save_fromDate");
             HttpWebRequestExtension.cookieList.Add("_jc_save_fromDate",
@@ -167,14 +147,6 @@ namespace AutoTicket
                             "kyfw.12306.cn")
             );
 
-
-            //HttpWebRequestExtension._12306Cookies.Add(
-            //            new Cookie(
-            //                "_jc_save_toDate",
-            //                dtpTrainDate.Value.AddDays(-1).ToString("yyyy-MM-dd"),
-            //                "/",
-            //               "kyfw.12306.cn"));
-
             HttpWebRequestExtension.cookieList.Remove("_jc_save_toDate");
             HttpWebRequestExtension.cookieList.Add("_jc_save_toDate",
                 new Cookie(
@@ -183,13 +155,6 @@ namespace AutoTicket
                             "/",
                            "kyfw.12306.cn")
             );
-
-            //HttpWebRequestExtension._12306Cookies.Add(
-            //        new Cookie(
-            //        "_jc_save_wfdc_flag",
-            //        "dc",
-            //        "/",
-            //        "kyfw.12306.cn"));
 
             HttpWebRequestExtension.cookieList.Remove("_jc_save_wfdc_flag");
             HttpWebRequestExtension.cookieList.Add("_jc_save_wfdc_flag",
@@ -207,22 +172,26 @@ namespace AutoTicket
             }
         }
 
-        // 刷出的列表选车次
+        /// <summary>
+        /// 进入最后选人和验证码的界面
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button2_Click(object sender, EventArgs e)
         {
-
             RobTicket finalStep = new RobTicket();
             finalStep.Show();
-
         }
-
-        
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            //this.lblCDNSite.Text = CDNReset.GetCDN();
         }
 
+        /// <summary>
+        /// 点击行中的预定按钮，直接进入选票界面
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             var senderGrid = (DataGridView)sender;
@@ -236,7 +205,9 @@ namespace AutoTicket
                 TicketBiz.fromStationTelecode = this.cmbstartStation.SelectedValue.ToString();
                 TicketBiz.toStationTelecode = this.cmbendStation.SelectedValue.ToString();
                 TicketBiz.train_date = this.dtpTrainDate.Value.ToUniversalTime().ToString();
-                
+                TicketBiz.query_from_station_name = this.cmbstartStation.Text;
+                TicketBiz.query_to_station_name = this.cmbendStation.Text;
+                button2_Click(sender, e);
             }
         }
     }

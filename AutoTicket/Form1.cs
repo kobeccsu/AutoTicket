@@ -96,7 +96,7 @@ namespace AutoTicket
         private void button1_Click_1(object sender, EventArgs e)
         {
             //var loginRes = HttpWebRequestExtension.GetWebContent(FirstLoginGetCookieUrl, null);
-            //this.richTextBox1.Text = loginRes;
+            this.richTextBox1.Text = "";
 
             var checkRandCode = TicketBiz.FirstCheckRandCode(txtRandCode.Text);
             this.richTextBox1.Text += checkRandCode;
@@ -122,6 +122,7 @@ namespace AutoTicket
         private void button3_Click(object sender, EventArgs e)
         {
             this.txtRandCode.Text = "";
+            this.richTextBox1.Text = "";
             var random = string.Format(TrainUrlConstant.loginImg, new Random().NextDouble());
             this.pictureBox1.Image = Image.FromStream(HttpWebRequestExtension.GetWebImage(random, new CookieContainer()));
         }

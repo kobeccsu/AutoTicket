@@ -158,7 +158,7 @@
             // lblCDNSite
             // 
             this.lblCDNSite.AutoSize = true;
-            this.lblCDNSite.Location = new System.Drawing.Point(78, 331);
+            this.lblCDNSite.Location = new System.Drawing.Point(826, 660);
             this.lblCDNSite.Name = "lblCDNSite";
             this.lblCDNSite.Size = new System.Drawing.Size(0, 12);
             this.lblCDNSite.TabIndex = 10;
@@ -184,7 +184,7 @@
             this.wz_num,
             this.secretStr,
             this.train_no});
-            this.dataGridView1.Location = new System.Drawing.Point(26, 140);
+            this.dataGridView1.Location = new System.Drawing.Point(26, 111);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowTemplate.Height = 23;
             this.dataGridView1.Size = new System.Drawing.Size(918, 420);

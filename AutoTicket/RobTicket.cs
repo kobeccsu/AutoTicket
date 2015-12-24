@@ -33,6 +33,8 @@ namespace AutoTicket
             this.richTextBox1.Text += Environment.NewLine + "提交订单后结果:" + TicketBiz.FinalSubmitOrder(txtRandCode.Text);
 
             this.richTextBox1.Text += Environment.NewLine + "查看还剩多少张票:" + TicketBiz.GetQueueCount();
+
+            this.richTextBox1.Text += Environment.NewLine + "点最后一个按钮，是否会排队:" + TicketBiz.ConfirmSingleForQueue(txtRandCode.Text);
             //this.richTextBox1.Text += Environment.NewLine + "提交订单后结果:";// +checkOrderResult;
         }
 

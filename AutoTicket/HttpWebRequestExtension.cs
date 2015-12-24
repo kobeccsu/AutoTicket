@@ -283,6 +283,16 @@ namespace AutoTicket
             return string.Empty;
         }
 
+        public static string GetValueFromPage(string inputString, string pattern)
+        {
+            Match match = Regex.Match(inputString, pattern);
+            if (match.Success)
+            {
+                return match.Value;
+            }
+            return string.Empty;
+        }
+
         static HttpWebRequest httpWebRequest = null;
         //public static string asyncResult = "";
 

@@ -41,6 +41,20 @@ namespace AutoTicket
         /// </summary>
         public static string leftTicket = "";
 
+        public static string key_check_isChange = "";
+
+        public static string train_location = "";
+
+        /// <summary>
+        /// 出发站站名
+        /// </summary>
+        public static string query_from_station_name = "";
+
+        /// <summary>
+        /// 到达站站名
+        /// </summary>
+        public static string query_to_station_name = "";
+
         /// <summary>
         /// 首次登陆检查验证码
         /// </summary>
@@ -95,9 +109,9 @@ namespace AutoTicket
         {
             // 这里这个码是动态生成的，不一样
             var param = "secretStr=" + secretStr
-                + "&train_date=" + "2015-12-24" +
+                + "&train_date=" + DateTime.Parse(train_date).ToString("yyyy-MM-dd") +
                 "&back_train_date=" + "2015-12-23" + "&tour_flag=dc&purpose_codes=ADULT&query_from_station_name="
-                + "深圳" + "&query_to_station_name=" + "衡阳" + "&undefined=";
+                + query_from_station_name + "&query_to_station_name=" + query_to_station_name + "&undefined=";
 
             HttpWebRequestExtension.referer = "https://kyfw.12306.cn/otn/leftTicket/init";
             HttpWebRequestExtension.contentType = "application/x-www-form-urlencoded; charset=UTF-8";
@@ -113,6 +127,8 @@ namespace AutoTicket
             var redirectInitDC = HttpWebRequestExtension.PostWebContent(TrainUrlConstant.InitDcPage, HttpWebRequestExtension._12306Cookies, "_json_att=");
             HttpWebRequestExtension.TOKEN = HttpWebRequestExtension.GetToken(redirectInitDC);
             TicketBiz.leftTicket = HttpWebRequestExtension.GetLeftTicketStr(redirectInitDC);
+            TicketBiz.key_check_isChange = HttpWebRequestExtension.GetValueFromPage(redirectInitDC, "(?<='key_check_isChange':').*?(?=',)");
+            TicketBiz.train_location = HttpWebRequestExtension.GetValueFromPage(redirectInitDC, "(?<=''train_location':').*?(?='})");
 
             HttpWebRequestExtension.referer = "https://kyfw.12306.cn/otn/confirmPassenger/initDc";
             HttpWebRequestExtension.contentType = "application/x-www-form-urlencoded; charset=UTF-8";
@@ -173,6 +189,30 @@ namespace AutoTicket
                 "&toStationTelecode=" + toStationTelecode +
                 "&leftTicket=" + leftTicket +
                 "&purpose_codes=" + "00" +
+                "&_json_att=" +
+                "&REPEAT_SUBMIT_TOKEN=" + HttpWebRequestExtension.TOKEN
+            );
+        }
+
+        /// <summary>
+        /// 最后一个点击确定的按钮
+        /// </summary>
+        /// <returns></returns>
+        public static string ConfirmSingleForQueue(string randCode)
+        {
+            HttpWebRequestExtension.accept = "application/json, text/javascript, */*; q=0.01";
+            HttpWebRequestExtension.referer = "https://kyfw.12306.cn/otn/confirmPassenger/initDc";
+            HttpWebRequestExtension.contentType = "application/x-www-form-urlencoded; charset=UTF-8";
+            return HttpWebRequestExtension.PostWebContent(TrainUrlConstant.ConfirmForSingleQueue, HttpWebRequestExtension._12306Cookies,
+                "passengerTicketStr=" + WebUtility.UrlEncode("O,0,1,周磊,1,430403198512142019,15820752123,N_O,0,1,何昭慧,1,430482198612030060,13420996107,N") +
+                "&oldPassengerStr=" + WebUtility.UrlEncode("周磊,1,430403198512142019,1_何昭慧,1,430482198612030060,1_") +
+                "&randCode=" + WebUtility.UrlEncode(randCode) +
+                "&purpose_codes=00" +
+                "&key_check_isChange=" + key_check_isChange +
+                "&leftTicketStr=" + leftTicket +
+                "&train_location=" + train_location +
+                "&roomType=00" +
+                "&dwAll=N" +
                 "&_json_att=" +
                 "&REPEAT_SUBMIT_TOKEN=" + HttpWebRequestExtension.TOKEN
             );
