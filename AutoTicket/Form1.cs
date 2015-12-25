@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -22,8 +24,6 @@ namespace AutoTicket
             InitializeComponent();
         }
 
-       
-
         private void button1_Click(object sender, EventArgs e)
         {
             //this.MethodToAccessSSL();
@@ -36,6 +36,7 @@ namespace AutoTicket
             this.pictureBox1.Image = Image.FromStream(s);
             response.Close();
         }
+
         private CookieContainer cc = new CookieContainer();
 
         private void button2_Click(object sender, EventArgs e)
@@ -90,24 +91,43 @@ namespace AutoTicket
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            button3_Click(sender, e);
+            try
+            {
+                button3_Click(sender, e);
+            }
+            catch
+            {
+                CDNReset.GetCDN();
+                Form1_Load(sender, e);
+            }
         }
 
+        /// <summary>
+        /// 登录的代码
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button1_Click_1(object sender, EventArgs e)
         {
             //var loginRes = HttpWebRequestExtension.GetWebContent(FirstLoginGetCookieUrl, null);
             this.richTextBox1.Text = "";
 
             var checkRandCode = TicketBiz.FirstCheckRandCode(txtRandCode.Text);
-            this.richTextBox1.Text += checkRandCode;
+            dynamic checkResultJson = JsonConvert.DeserializeObject(checkRandCode);
+            this.richTextBox1.Text += (checkResultJson["data"]["msg"].ToString() == "TRUE" ? "检查验证码成功" : "检查失败")+ Environment.NewLine;
 
             var loginRes = TicketBiz.FirstLogin(txtUserName.Text, txtPassword.Text, txtRandCode.Text);
+            dynamic data = JObject.Parse(loginRes);
+            this.richTextBox1.Text += (data["data"]["loginCheck"].ToString() == "Y" ? "登录成功": "登录失败!") + Environment.NewLine;
 
             TicketBiz.LoginFinalStep();
-
-            this.richTextBox1.Text += loginRes;
         }
 
+        /// <summary>
+        /// 打开查询车次的代码
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button2_Click_1(object sender, EventArgs e)
         {
             QueryTicket tic = new QueryTicket();

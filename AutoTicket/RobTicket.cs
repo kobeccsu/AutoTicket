@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -27,6 +28,7 @@ namespace AutoTicket
         private void button1_Click(object sender, EventArgs e)
         {
             var result = TicketBiz.LastCheckRandCode(txtRandCode.Text);
+
             this.richTextBox1.Text += "提交验证码后结果:" + result;
 
             HttpWebRequestExtension.showText = this.richTextBox1;
