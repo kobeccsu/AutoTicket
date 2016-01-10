@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -73,16 +74,37 @@ namespace AutoTicket
         /// <param name="e"></param>
         private void RobTicket_Load(object sender, EventArgs e)
         {
-            this.richTextBox1.Text += "检查用户：" + TicketBiz.CheckUser();
+            bool userLoginIsOk = true;
+            var checkUserState = TicketBiz.CheckUser();
+            dynamic afterCheckJson =  JsonConvert.DeserializeObject(checkUserState);
+            this.richTextBox1.Text += Environment.NewLine + "检查用户：" + 
+                (afterCheckJson["data"]["flag"].ToString().ToUpper() == "TRUE" ? "当前状态有效" : "登陆已失效");
 
             TicketBiz.ChooseTicketIntoLastStep();
 
             // initdc 页面会设置几个值 这个时候需要取出来
             var getPassenger = TicketBiz.GetTokenThenGetPassenger();
+            dynamic passdengerJSON = JsonConvert.DeserializeObject(getPassenger);
+            try
+            {
+                if (passdengerJSON["data"]["noLogin"].ToString().ToUpper() == "TRUE")
+                {
+                    this.richTextBox1.Text += Environment.NewLine + "获取联系人时也检测到用户为登陆";
+                    userLoginIsOk = false;
+                }
+            }
+            catch { }
 
             this.richTextBox1.Text += Environment.NewLine + "获取联系人数据:" + getPassenger;
 
-            button2_Click(sender, e);
+            if (userLoginIsOk)
+            {
+                button2_Click(sender, e);
+            }
+            else
+            {
+                this.richTextBox1.Text += "没有登陆加载不了图片";
+            }
         }
 
         private void pictureBox1_MouseClick_1(object sender, MouseEventArgs e)

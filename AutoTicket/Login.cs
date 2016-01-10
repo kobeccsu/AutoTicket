@@ -17,9 +17,9 @@ using System.Windows.Forms;
 
 namespace AutoTicket
 {
-    public partial class Form1 : Form
+    public partial class Login : Form
     {
-        public Form1()
+        public Login()
         {
             InitializeComponent();
         }
@@ -117,8 +117,17 @@ namespace AutoTicket
             this.richTextBox1.Text += (checkResultJson["data"]["msg"].ToString() == "TRUE" ? "检查验证码成功" : "检查失败")+ Environment.NewLine;
 
             var loginRes = TicketBiz.FirstLogin(txtUserName.Text, txtPassword.Text, txtRandCode.Text);
-            dynamic data = JObject.Parse(loginRes);
-            this.richTextBox1.Text += (data["data"]["loginCheck"].ToString() == "Y" ? "登录成功": "登录失败!") + Environment.NewLine;
+            dynamic data = JsonConvert.DeserializeObject(loginRes);
+
+
+            try
+            {
+                this.richTextBox1.Text += (data["data"]["loginCheck"].ToString() == "Y" ? "登录成功" : "登录失败!") + Environment.NewLine;
+            }
+            catch
+            {
+                this.richTextBox1.Text += data["messages"].ToString() + Environment.NewLine;    
+            }
 
             TicketBiz.LoginFinalStep();
         }
