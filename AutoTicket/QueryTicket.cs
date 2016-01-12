@@ -31,6 +31,8 @@ namespace AutoTicket
             var url = "https://kyfw.12306.cn/otn/resources/js/framework/station_name.js";
             var loginRes = HttpWebRequestExtension.GetWebContent(url, HttpWebRequestExtension._12306Cookies);
             SplitData(loginRes);
+            var getPassenger = TicketBiz.GetTokenThenGetPassenger();
+            this.richTextBox1.Text += Environment.NewLine + "联系人已取出:" + getPassenger;
         }
 
         /// <summary>

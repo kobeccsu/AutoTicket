@@ -59,6 +59,14 @@
             this.wz_num = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.secretStr = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.train_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.lblTicketLevel = new System.Windows.Forms.Label();
+            this.cbBussLevel = new System.Windows.Forms.CheckBox();
+            this.cbHighNo1 = new System.Windows.Forms.CheckBox();
+            this.cbHighNo2 = new System.Windows.Forms.CheckBox();
+            this.cbNormalSeat = new System.Windows.Forms.CheckBox();
+            this.cbNormalBed = new System.Windows.Forms.CheckBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -114,7 +122,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(472, 31);
+            this.button1.Location = new System.Drawing.Point(434, 32);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(119, 23);
             this.button1.TabIndex = 6;
@@ -124,7 +132,7 @@
             // 
             // richTextBox1
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(26, 576);
+            this.richTextBox1.Location = new System.Drawing.Point(26, 553);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.Size = new System.Drawing.Size(741, 96);
             this.richTextBox1.TabIndex = 7;
@@ -132,7 +140,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(472, 67);
+            this.button2.Location = new System.Drawing.Point(434, 67);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(119, 23);
             this.button2.TabIndex = 8;
@@ -149,7 +157,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(773, 660);
+            this.label4.Location = new System.Drawing.Point(22, 119);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(53, 12);
             this.label4.TabIndex = 9;
@@ -158,7 +166,7 @@
             // lblCDNSite
             // 
             this.lblCDNSite.AutoSize = true;
-            this.lblCDNSite.Location = new System.Drawing.Point(826, 660);
+            this.lblCDNSite.Location = new System.Drawing.Point(75, 119);
             this.lblCDNSite.Name = "lblCDNSite";
             this.lblCDNSite.Size = new System.Drawing.Size(0, 12);
             this.lblCDNSite.TabIndex = 10;
@@ -184,10 +192,10 @@
             this.wz_num,
             this.secretStr,
             this.train_no});
-            this.dataGridView1.Location = new System.Drawing.Point(26, 111);
+            this.dataGridView1.Location = new System.Drawing.Point(26, 149);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowTemplate.Height = 23;
-            this.dataGridView1.Size = new System.Drawing.Size(918, 420);
+            this.dataGridView1.Size = new System.Drawing.Size(911, 366);
             this.dataGridView1.TabIndex = 11;
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
@@ -310,11 +318,95 @@
             this.train_no.HeaderText = "列车编号";
             this.train_no.Name = "train_no";
             // 
+            // lblTicketLevel
+            // 
+            this.lblTicketLevel.AutoSize = true;
+            this.lblTicketLevel.Location = new System.Drawing.Point(577, 35);
+            this.lblTicketLevel.Name = "lblTicketLevel";
+            this.lblTicketLevel.Size = new System.Drawing.Size(29, 12);
+            this.lblTicketLevel.TabIndex = 12;
+            this.lblTicketLevel.Text = "席别";
+            // 
+            // cbBussLevel
+            // 
+            this.cbBussLevel.AutoSize = true;
+            this.cbBussLevel.Location = new System.Drawing.Point(623, 34);
+            this.cbBussLevel.Name = "cbBussLevel";
+            this.cbBussLevel.Size = new System.Drawing.Size(60, 16);
+            this.cbBussLevel.TabIndex = 13;
+            this.cbBussLevel.Text = "商务座";
+            this.cbBussLevel.UseVisualStyleBackColor = true;
+            // 
+            // cbHighNo1
+            // 
+            this.cbHighNo1.AutoSize = true;
+            this.cbHighNo1.Location = new System.Drawing.Point(689, 34);
+            this.cbHighNo1.Name = "cbHighNo1";
+            this.cbHighNo1.Size = new System.Drawing.Size(60, 16);
+            this.cbHighNo1.TabIndex = 14;
+            this.cbHighNo1.Text = "一等座";
+            this.cbHighNo1.UseVisualStyleBackColor = true;
+            // 
+            // cbHighNo2
+            // 
+            this.cbHighNo2.AutoSize = true;
+            this.cbHighNo2.Location = new System.Drawing.Point(756, 33);
+            this.cbHighNo2.Name = "cbHighNo2";
+            this.cbHighNo2.Size = new System.Drawing.Size(60, 16);
+            this.cbHighNo2.TabIndex = 15;
+            this.cbHighNo2.Text = "二等座";
+            this.cbHighNo2.UseVisualStyleBackColor = true;
+            // 
+            // cbNormalSeat
+            // 
+            this.cbNormalSeat.AutoSize = true;
+            this.cbNormalSeat.Location = new System.Drawing.Point(623, 67);
+            this.cbNormalSeat.Name = "cbNormalSeat";
+            this.cbNormalSeat.Size = new System.Drawing.Size(48, 16);
+            this.cbNormalSeat.TabIndex = 16;
+            this.cbNormalSeat.Text = "硬座";
+            this.cbNormalSeat.UseVisualStyleBackColor = true;
+            // 
+            // cbNormalBed
+            // 
+            this.cbNormalBed.AutoSize = true;
+            this.cbNormalBed.Location = new System.Drawing.Point(689, 67);
+            this.cbNormalBed.Name = "cbNormalBed";
+            this.cbNormalBed.Size = new System.Drawing.Size(48, 16);
+            this.cbNormalBed.TabIndex = 17;
+            this.cbNormalBed.Text = "硬卧";
+            this.cbNormalBed.UseVisualStyleBackColor = true;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(957, 32);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(41, 12);
+            this.label5.TabIndex = 18;
+            this.label5.Text = "乘车人";
+            // 
+            // checkedListBox1
+            // 
+            this.checkedListBox1.FormattingEnabled = true;
+            this.checkedListBox1.Location = new System.Drawing.Point(959, 57);
+            this.checkedListBox1.Name = "checkedListBox1";
+            this.checkedListBox1.Size = new System.Drawing.Size(176, 36);
+            this.checkedListBox1.TabIndex = 19;
+            // 
             // QueryTicket
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(998, 683);
+            this.ClientSize = new System.Drawing.Size(1162, 683);
+            this.Controls.Add(this.checkedListBox1);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.cbNormalBed);
+            this.Controls.Add(this.cbNormalSeat);
+            this.Controls.Add(this.cbHighNo2);
+            this.Controls.Add(this.cbHighNo1);
+            this.Controls.Add(this.cbBussLevel);
+            this.Controls.Add(this.lblTicketLevel);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.lblCDNSite);
             this.Controls.Add(this.label4);
@@ -367,5 +459,13 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn wz_num;
         private System.Windows.Forms.DataGridViewTextBoxColumn secretStr;
         private System.Windows.Forms.DataGridViewTextBoxColumn train_no;
+        private System.Windows.Forms.Label lblTicketLevel;
+        private System.Windows.Forms.CheckBox cbBussLevel;
+        private System.Windows.Forms.CheckBox cbHighNo1;
+        private System.Windows.Forms.CheckBox cbHighNo2;
+        private System.Windows.Forms.CheckBox cbNormalSeat;
+        private System.Windows.Forms.CheckBox cbNormalBed;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.CheckedListBox checkedListBox1;
     }
 }

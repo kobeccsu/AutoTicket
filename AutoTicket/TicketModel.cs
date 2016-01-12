@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace AutoTicket
 {
+    /// <summary>
+    /// 查询出的余票每条的结果
+    /// </summary>
     public class QueryLeftNewDTO
     {
         public string train_no { get; set; }
@@ -40,18 +43,46 @@ namespace AutoTicket
         public string is_support_card { get; set; }
         public string controlled_train_flag { get; set; }
         public string controlled_train_message { get; set; }
+        /// <summary>
+        /// 硬座
+        /// </summary>
         public string yz_num { get; set; }
+        /// <summary>
+        /// 软座
+        /// </summary>
         public string rz_num { get; set; }
+        
+        /// <summary>
+        /// 硬卧
+        /// </summary>
         public string yw_num { get; set; }
+        /// <summary>
+        /// 软卧
+        /// </summary>
         public string rw_num { get; set; }
         public string gr_num { get; set; }
+        /// <summary>
+        /// 一等座
+        /// </summary>
         public string zy_num { get; set; }
+        /// <summary>
+        /// 二等座
+        /// </summary>
         public string ze_num { get; set; }
         public string tz_num { get; set; }
         public string gg_num { get; set; }
         public string yb_num { get; set; }
+        /// <summary>
+        /// 无座
+        /// </summary>
         public string wz_num { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public string qt_num { get; set; }
+        /// <summary>
+        /// 商务座数量
+        /// </summary>
         public string swz_num { get; set; }
     }
 
