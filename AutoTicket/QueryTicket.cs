@@ -9,6 +9,7 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Web.UI.WebControls;
 using System.Windows.Forms;
 
 namespace AutoTicket
@@ -32,6 +33,22 @@ namespace AutoTicket
             var loginRes = HttpWebRequestExtension.GetWebContent(url, HttpWebRequestExtension._12306Cookies);
             SplitData(loginRes);
             var getPassenger = TicketBiz.GetTokenThenGetPassenger();
+            AutoTicket.JSON.Passenger.RootObject passengerDTO = JsonConvert.DeserializeObject<AutoTicket.JSON.Passenger.RootObject>(getPassenger);
+            DataTable dt = new DataTable();
+
+            ((System.Windows.Forms.ListBox)this.checkedListBox1).DisplayMember = "Key";
+            ((System.Windows.Forms.ListBox)this.checkedListBox1).ValueMember = "Value";
+            foreach (var item in passengerDTO.data.normal_passengers)
+            {
+                this.checkedListBox1.Items.Add(new
+                {
+                    Key = item.passenger_name,
+                    Value = "0,1,"
+                        + item.passenger_name + ",1," + item.passenger_id_no + "," + item.mobile_no + ",N"
+                });
+            }
+
+            this.checkedListBox1.ClientSize = new Size(TextRenderer.MeasureText(checkedListBox1.Items[0].ToString(), checkedListBox1.Font).Width + 20, checkedListBox1.GetItemRectangle(0).Height * checkedListBox1.Items.Count);
             this.richTextBox1.Text += Environment.NewLine + "联系人已取出:" + getPassenger;
         }
 
@@ -209,8 +226,29 @@ namespace AutoTicket
                 TicketBiz.train_date = this.dtpTrainDate.Value.ToUniversalTime().ToString();
                 TicketBiz.query_from_station_name = this.cmbstartStation.Text;
                 TicketBiz.query_to_station_name = this.cmbendStation.Text;
+                SetPassenger();
                 button2_Click(sender, e);
             }
+        }
+
+        /// <summary>
+        /// 将界面选好的人和席别，拼凑好写入静态变量，以供后面的修改
+        /// </summary>
+        private void SetPassenger()
+        {
+            StringBuilder sbGetPassenger = new StringBuilder();
+            StringBuilder sbOldPassgener = new StringBuilder();
+            foreach (var item in this.checkedListBox1.CheckedItems)
+            {
+                var checkItem = (ListItem)item;
+                string selectedStrig = checkItem.Value;
+                sbGetPassenger.Append("O," + selectedStrig + "_");
+                sbOldPassgener.Append(selectedStrig.Substring(selectedStrig.IndexOf(",", 0, 2) + 1, selectedStrig.IndexOf(",", 0, 6)) + "_");
+            }
+            sbGetPassenger = sbGetPassenger.Remove(0, sbGetPassenger.Length - 1);
+
+            TicketBiz.passengerTicketStr = sbGetPassenger.ToString();
+            TicketBiz.oldPassengerStr = sbOldPassgener.ToString();
         }
     }
 }

@@ -55,6 +55,17 @@ namespace AutoTicket
         /// </summary>
         public static string query_to_station_name = "";
 
+        /// <summary>
+        /// 拼这个字符串的逻辑在 12306是这个逻辑 ，用 _  分隔每个乘客
+        /// seat_type 座位席别，
+        /// ticket_type 1 成人片，2，儿童票，3 学生票， 4 残疾军人票
+        /// name 乘客中文名
+        /// id_type 1 为身份证
+        /// id_no 身份证号码
+        /// phone_no 手机号
+        /// 
+        /// limit_tickets[aA].seat_type + ",0," + limit_tickets[aA].ticket_type + "," + limit_tickets[aA].name + "," + limit_tickets[aA].id_type + "," + limit_tickets[aA].id_no + "," + (limit_tickets[aA].phone_no == null  ? "" : limit_tickets[aA].phone_no) + "," + (limit_tickets[aA].save_status == "" ? "N" : "Y");
+        /// </summary>
         public static string passengerTicketStr = "O,0,1,周磊,1,430403198512142019,15820752123,N_O,0,1,何昭慧,1,430482198612030060,13420996107,N_O,0,1,王满秀,1,430482196507180025,,N";
 
         public static string oldPassengerStr = "周磊,1,430403198512142019,1_何昭慧,1,430482198612030060,1_王满秀,1,430482196507180025,1_";
