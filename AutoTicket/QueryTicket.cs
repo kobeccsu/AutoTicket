@@ -240,12 +240,12 @@ namespace AutoTicket
             StringBuilder sbOldPassgener = new StringBuilder();
             foreach (var item in this.checkedListBox1.CheckedItems)
             {
-                var checkItem = (ListItem)item;
-                string selectedStrig = checkItem.Value;
+                var type = Util.AnonymousTypeCast(item, new { Key = "", Value = "" });
+                string selectedStrig = type.Value;
                 sbGetPassenger.Append("O," + selectedStrig + "_");
                 sbOldPassgener.Append(selectedStrig.Substring(selectedStrig.IndexOf(",", 0, 2) + 1, selectedStrig.IndexOf(",", 0, 6)) + "_");
             }
-            sbGetPassenger = sbGetPassenger.Remove(0, sbGetPassenger.Length - 1);
+            sbGetPassenger = sbGetPassenger.Remove(sbGetPassenger.Length - 1, 1);
 
             TicketBiz.passengerTicketStr = sbGetPassenger.ToString();
             TicketBiz.oldPassengerStr = sbOldPassgener.ToString();

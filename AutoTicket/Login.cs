@@ -93,7 +93,10 @@ namespace AutoTicket
         {
             try
             {
+                txtUserName.Text = Util.ReadConfig("config/username");
+                txtPassword.Text = Util.ReadConfig("config/password");
                 button3_Click(sender, e);
+
             }
             catch
             {
@@ -123,6 +126,8 @@ namespace AutoTicket
             try
             {
                 this.richTextBox1.Text += (data["data"]["loginCheck"].ToString() == "Y" ? "登录成功" : "登录失败!") + Environment.NewLine;
+                Util.WriteConfig("config/username", txtUserName.Text);
+                Util.WriteConfig("config/password", txtPassword.Text);
             }
             catch
             {

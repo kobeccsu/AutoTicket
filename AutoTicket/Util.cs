@@ -9,6 +9,8 @@ using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
+using System.IO;
 
 namespace AutoTicket
 {
@@ -198,6 +200,72 @@ namespace AutoTicket
 
             // Convert utf-8 bytes to a string.
             return System.Text.Encoding.UTF8.GetString(utf8Bytes);
+        }
+
+        public static T AnonymousTypeCast<T>(object anonymous, T typeExpression)
+        {
+            return (T)anonymous;
+        }
+
+        /// <summary>
+        /// 读取常用缓存配置
+        /// </summary>
+        /// <param name="xPath">"config/BasePath"</param>
+        /// <returns></returns>
+        public static string ReadConfig(string xPath)
+        {
+            XmlDocument doc = new XmlDocument();
+            string currentPath = AppDomain.CurrentDomain.BaseDirectory;
+            doc.Load(currentPath + "UserProfile.cfg");
+            return doc.SelectSingleNode(xPath).InnerText;
+        }
+
+        public static void WriteConfig(string xPath, string innerText)
+        { 
+            string currentPath = AppDomain.CurrentDomain.BaseDirectory;
+            string configPath = currentPath + "UserProfile.cfg";
+            XmlDocument doc = new XmlDocument();
+
+            if (!File.Exists(configPath))
+            {
+                doc.AppendChild(doc.CreateElement("config"));
+                doc.Save(configPath);
+                //Populate with data here if necessary, then save to make sure it exists
+            }
+
+            doc.Load(configPath);
+            
+
+            XmlNode node = doc.SelectSingleNode(xPath);
+            if (node == null)
+            {
+                node = makeXPath(doc, doc as XmlNode, xPath);
+            }
+            node.InnerText = innerText;
+            doc.Save(configPath);
+        }
+
+        static private XmlNode makeXPath(XmlDocument doc, string xpath)
+        {
+            return makeXPath(doc, doc as XmlNode, xpath);
+        }
+
+        static private XmlNode makeXPath(XmlDocument doc, XmlNode parent, string xpath)
+        {
+            // grab the next node name in the xpath; or return parent if empty
+            string[] partsOfXPath = xpath.Trim('/').Split('/');
+            string nextNodeInXPath = partsOfXPath.First();
+            if (string.IsNullOrEmpty(nextNodeInXPath))
+                return parent;
+
+            // get or create the node from the name
+            XmlNode node = parent.SelectSingleNode(nextNodeInXPath);
+            if (node == null)
+                node = parent.AppendChild(doc.CreateElement(nextNodeInXPath));
+
+            // rejoin the remainder of the array as an xpath expression and recurse
+            string rest = String.Join("/", partsOfXPath.Skip(1).ToArray());
+            return makeXPath(doc, node, rest);
         }
     }
 }
