@@ -22,6 +22,21 @@ namespace AutoTicket
         {
             InitializeComponent();
             GetData();
+            try
+            {
+                LoadCustomData();
+            } catch { }
+        }
+
+        private void LoadCustomData()
+        {
+            cmbstartStation.Text = Util.ReadConfig("config/startPlaceName");
+            cmbstartStation.SelectedValue = Util.ReadConfig("config/startPlaceCode");
+            cmbendStation.Text = Util.ReadConfig("config/endPlaceName");
+            cmbendStation.SelectedValue = Util.ReadConfig("config/endPlaceCode");
+            DateTime n = DateTime.Now;
+            DateTime.TryParse(Util.ReadConfig("config/trainDate"), out n);
+            dtpTrainDate.Value = n;
         }
 
         /// <summary>
@@ -72,8 +87,6 @@ namespace AutoTicket
                         cacheDic.Add(statename, code);
                         allPlace.Add(new ItemObject() { Name= statename, Value= code });
                         endPlace.Add(new ItemObject() { Name = statename, Value = code });
-                        //cmbstartStation.Items.Add(statename);
-                        //cmbendStation.Items.Add(statename);
                     }
                 }
             }
@@ -107,6 +120,9 @@ namespace AutoTicket
             var trainLeftLog = HttpWebRequestExtension.GetWebContent(logUrl, HttpWebRequestExtension._12306Cookies);
             var trainleftTicketInfoRes = HttpWebRequestExtension.GetWebContent(url, HttpWebRequestExtension._12306Cookies);
 
+            // 保存用户常用操作
+            SaveCustomerUseful();
+
             RootObject obj = JsonConvert.DeserializeObject<RootObject>(trainleftTicketInfoRes);
             DataTable dt = new DataTable();
             QueryLeftNewDTO sample = new QueryLeftNewDTO();
@@ -131,6 +147,15 @@ namespace AutoTicket
             this.richTextBox1.Text = trainleftTicketInfoRes;
 
             SaveJCCookie();
+        }
+
+        private void SaveCustomerUseful()
+        {
+            Util.WriteConfig("config/startPlaceName", cmbstartStation.Text);
+            Util.WriteConfig("config/startPlaceCode", cmbstartStation.SelectedValue.ToString());
+            Util.WriteConfig("config/endPlaceName", cmbendStation.Text);
+            Util.WriteConfig("config/endPlaceCode", cmbendStation.SelectedValue.ToString());
+            Util.WriteConfig("config/trainDate", dtpTrainDate.Value.ToString("yyyy-MM-dd"));
         }
 
         /// <summary>

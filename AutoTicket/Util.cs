@@ -217,7 +217,8 @@ namespace AutoTicket
             XmlDocument doc = new XmlDocument();
             string currentPath = AppDomain.CurrentDomain.BaseDirectory;
             doc.Load(currentPath + "UserProfile.cfg");
-            return doc.SelectSingleNode(xPath).InnerText;
+            XmlNode node = doc.SelectSingleNode(xPath);
+            return node != null ? node.InnerText : "";
         }
 
         public static void WriteConfig(string xPath, string innerText)
