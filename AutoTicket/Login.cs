@@ -100,7 +100,7 @@ namespace AutoTicket
             }
             catch
             {
-                CDNReset.GetCDN();
+                //CDNReset.GetCDN();
                 Form1_Load(sender, e);
             }
         }
@@ -117,7 +117,7 @@ namespace AutoTicket
 
             var checkRandCode = TicketBiz.FirstCheckRandCode(txtRandCode.Text);
             dynamic checkResultJson = JsonConvert.DeserializeObject(checkRandCode);
-            this.richTextBox1.Text += (checkResultJson["data"]["msg"].ToString() == "TRUE" ? "检查验证码成功" : "检查失败")+ Environment.NewLine;
+            this.richTextBox1.Text += checkResultJson;
 
             var loginRes = TicketBiz.FirstLogin(txtUserName.Text, txtPassword.Text, txtRandCode.Text);
             dynamic data = JsonConvert.DeserializeObject(loginRes);
@@ -125,7 +125,7 @@ namespace AutoTicket
 
             try
             {
-                this.richTextBox1.Text += (data["data"]["loginCheck"].ToString() == "Y" ? "登录成功" : "登录失败!") + Environment.NewLine;
+                this.richTextBox1.Text += data + Environment.NewLine;
                 Util.WriteConfig("config/username", txtUserName.Text);
                 Util.WriteConfig("config/password", txtPassword.Text);
             }

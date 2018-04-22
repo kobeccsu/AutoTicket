@@ -77,7 +77,7 @@ namespace AutoTicket
         public static string FirstCheckRandCode(string randCode)
         {
             var checkRandCode = HttpWebRequestExtension.PostWebContent(TrainUrlConstant.CheckRand, HttpWebRequestExtension._12306Cookies,
-                "randCode=" + randCode + "&rand=sjrand");
+                "answer=" + randCode + "&loginSite=E&rand=sjrand");
             return checkRandCode;
         }
 
@@ -91,8 +91,8 @@ namespace AutoTicket
         public static string FirstLogin(string userName, string password, string randCode)
         {
             var loginRes = HttpWebRequestExtension.PostWebContent(TrainUrlConstant.LoginPostForm, HttpWebRequestExtension._12306Cookies,
-                              "loginUserDTO.user_name=" + userName + "&userDTO.password=" + password
-                              + "&randCode=" + randCode
+                              "username=" + userName + "&password=" + password
+                              + "&appid=otn"
                               );
             return loginRes;
         }

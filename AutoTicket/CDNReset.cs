@@ -51,6 +51,7 @@ namespace AutoTicket
         /// <returns></returns>
         public static string GetCDN()
         {
+            // none set the DNS
             var newlines = lines.Select(l => l).ToList();
             newlines[i] = newlines[i].Substring(1);
 
