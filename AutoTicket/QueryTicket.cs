@@ -21,7 +21,7 @@ namespace AutoTicket
         public QueryTicket()
         {
             InitializeComponent();
-            GetData();
+            InitBasicData();
             try
             {
                 LoadCustomData();
@@ -42,17 +42,24 @@ namespace AutoTicket
         /// <summary>
         /// 加载站点间数据，这里可能已经过时，手动输入的时候已经不是这几个站点了
         /// </summary>
-        private void GetData()
+        private void InitBasicData()
         {
-            var url = "https://kyfw.12306.cn/otn/resources/js/framework/station_name.js";
+            var url = "https://kyfw.12306.cn/otn/resources/js/framework/station_name.js?station_version=1.9051";
             var loginRes = HttpWebRequestExtension.GetWebContent(url, HttpWebRequestExtension._12306Cookies);
-            SplitData(loginRes);
+            SetStation(loginRes);
+            SetPassengers();
+        }
+
+        private void SetPassengers()
+        {
+
             var getPassenger = TicketBiz.GetTokenThenGetPassenger();
             AutoTicket.JSON.Passenger.RootObject passengerDTO = JsonConvert.DeserializeObject<AutoTicket.JSON.Passenger.RootObject>(getPassenger);
-            DataTable dt = new DataTable();
 
             ((System.Windows.Forms.ListBox)this.checkedListBox1).DisplayMember = "Key";
             ((System.Windows.Forms.ListBox)this.checkedListBox1).ValueMember = "Value";
+
+            if (passengerDTO == null || passengerDTO.data == null || passengerDTO.data.normal_passengers == null) return;
             foreach (var item in passengerDTO.data.normal_passengers)
             {
                 this.checkedListBox1.Items.Add(new
@@ -63,7 +70,8 @@ namespace AutoTicket
                 });
             }
 
-            this.checkedListBox1.ClientSize = new Size(TextRenderer.MeasureText(checkedListBox1.Items[0].ToString(), checkedListBox1.Font).Width + 20, checkedListBox1.GetItemRectangle(0).Height * checkedListBox1.Items.Count);
+            this.checkedListBox1.ClientSize = new Size(TextRenderer.MeasureText(checkedListBox1.Items[0].ToString(), checkedListBox1.Font).Width + 20,
+                checkedListBox1.GetItemRectangle(0).Height * checkedListBox1.Items.Count);
             this.richTextBox1.Text += Environment.NewLine + "联系人已取出:" + getPassenger;
         }
 
@@ -71,7 +79,7 @@ namespace AutoTicket
         /// 拆分12306 站点数据
         /// </summary>
         /// <param name="station"></param>
-        private void SplitData(string station)
+        private void SetStation(string station)
         {
             var s = station.Split('=')[1].Replace("'", "").Replace(";", "").Split('|');
             List<ItemObject> allPlace = new List<ItemObject>();
@@ -107,17 +115,17 @@ namespace AutoTicket
         /// <param name="e"></param>
         private void button1_Click(object sender, EventArgs e)
         {
-            this.lblCDNSite.Text = CDNReset.GetCDN();
+            //this.lblCDNSite.Text = CDNReset.GetCDN();
             this.richTextBox1.Text = "";
 
-            var logUrl = string.Format(TrainUrlConstant.LogLeftTicketLog, dtpTrainDate.Value.ToString("yyyy-MM-dd"),
-                cmbstartStation.SelectedValue, cmbendStation.SelectedValue);
+            //var logUrl = string.Format(TrainUrlConstant.LogLeftTicketLog, dtpTrainDate.Value.ToString("yyyy-MM-dd"),
+            //    cmbstartStation.SelectedValue, cmbendStation.SelectedValue);
 
             var url = string.Format(TrainUrlConstant.TrainleftTicketInfo, dtpTrainDate.Value.ToString("yyyy-MM-dd"),
                 cmbstartStation.SelectedValue, cmbendStation.SelectedValue);
 
-
-            var trainLeftLog = HttpWebRequestExtension.GetWebContent(logUrl, HttpWebRequestExtension._12306Cookies);
+            // seems no use any more
+            //var trainLeftLog = HttpWebRequestExtension.GetWebContent(logUrl, HttpWebRequestExtension._12306Cookies);
             var trainleftTicketInfoRes = HttpWebRequestExtension.GetWebContent(url, HttpWebRequestExtension._12306Cookies);
 
             // 保存用户常用操作

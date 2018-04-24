@@ -111,6 +111,7 @@
     <EmbeddedResource Include="RobTicket.resx">
       <DependentUpon>RobTicket.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="Data\TicketLeftData.json" />
     <None Include="Plugin\12306.cer" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

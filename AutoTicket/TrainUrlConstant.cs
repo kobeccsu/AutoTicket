@@ -31,11 +31,12 @@ namespace AutoTicket
         /// 这里看起来是记录日志
         /// </summary>
         public const string LogLeftTicketLog = "https://kyfw.12306.cn/otn/leftTicket/log?leftTicketDTO.train_date={0}&leftTicketDTO.from_station={1}&leftTicketDTO.to_station={2}&purpose_codes=ADULT";
+        
 
         /// <summary>
         /// 剩余票数
         /// </summary>
-        public const string TrainleftTicketInfo = "https://kyfw.12306.cn/otn/leftTicket/queryT?leftTicketDTO.train_date={0}&leftTicketDTO.from_station={1}&leftTicketDTO.to_station={2}&purpose_codes=ADULT";
+        public const string TrainleftTicketInfo = "https://kyfw.12306.cn/otn/leftTicket/query?leftTicketDTO.train_date={0}&leftTicketDTO.from_station={1}&leftTicketDTO.to_station={2}&purpose_codes=ADULT";
         /// <summary>
         /// 提交前的验证码
         /// </summary>
