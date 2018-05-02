@@ -139,12 +139,14 @@ namespace AutoTicket
             dt.Columns.Add("buttonTextInfo");
 
             int i = 0;
-            foreach (var item in obj.data)
+            foreach (var item in obj.data.result)
             {
                 DataRow row = dt.NewRow();
-                Util.ClassToField<QueryLeftNewDTO>(dt, row, item.queryLeftNewDTO);
-                row["secretStr"] = item.secretStr;
-                row["buttonTextInfo"] = item.buttonTextInfo;
+                //Util.ClassToField<QueryLeftNewDTO>(dt, row, item);
+                var arr = item.Split(new string[]{"|"},  StringSplitOptions.RemoveEmptyEntries);
+                //row[""]
+                row["secretStr"] = arr[0];
+                row["buttonTextInfo"] = arr[1];
                 dt.Rows.Add(row);
             }
 

@@ -97,7 +97,7 @@ namespace AutoTicket
 
             if (cookeWrite == CookieStatus.ResponseSetCookie)
             {
-                fixCookies(httpWebRequest, (HttpWebResponse)httpWebResponse); 
+                FillCookie(httpWebRequest, (HttpWebResponse)httpWebResponse); 
             }
             Stream responseStream = httpWebResponse.GetResponseStream();
             StreamReader streamReader = new StreamReader(responseStream, Encoding.UTF8);
@@ -139,7 +139,7 @@ namespace AutoTicket
             httpWebRequest.ServicePoint.ConnectionLimit = int.MaxValue;
 
             var httpWebResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-            fixCookies(httpWebRequest, (HttpWebResponse)httpWebResponse);
+            FillCookie(httpWebRequest, (HttpWebResponse)httpWebResponse);
             Stream responseStream = httpWebResponse.GetResponseStream();
             StreamReader streamReader = new StreamReader(responseStream, Encoding.UTF8);
             
@@ -178,7 +178,7 @@ namespace AutoTicket
                 request.Proxy = new WebProxy("127.0.0.1", 8087); 
             }
             WebResponse response = request.GetResponse();
-            fixCookies(request, (HttpWebResponse)response);
+            FillCookie(request, (HttpWebResponse)response);
             return response.GetResponseStream();
         }
 
@@ -187,7 +187,7 @@ namespace AutoTicket
         /// </summary>
         /// <param name="request"></param>
         /// <param name="response"></param>
-        private static void fixCookies(HttpWebRequest request, HttpWebResponse response)
+        private static void FillCookie(HttpWebRequest request, HttpWebResponse response)
         {
             Util.BugFix_CookieDomain(_12306Cookies);
             for (int i = 0; i < response.Headers.Count; i++)
@@ -346,7 +346,7 @@ namespace AutoTicket
             WebResponse httpWebResponse = httpWebRequest.EndGetResponse(result);
             //if (cookeWrite == CookieStatus.ResponseSetCookie)
             //{
-                fixCookies(httpWebRequest, (HttpWebResponse)httpWebResponse);
+                FillCookie(httpWebRequest, (HttpWebResponse)httpWebResponse);
             //}
             Stream responseStream = httpWebResponse.GetResponseStream();
             StreamReader streamReader = new StreamReader(responseStream, Encoding.UTF8);

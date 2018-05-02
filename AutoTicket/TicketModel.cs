@@ -97,12 +97,17 @@ namespace AutoTicket
     {
     }
 
+    public class Data
+    {
+        public List<string> result { get; set; }
+    }
+
     public class RootObject
     {
         public string validateMessagesShowId { get; set; }
         public bool status { get; set; }
         public int httpstatus { get; set; }
-        public List<Datum> data { get; set; }
+        public Data data { get; set; }
         public List<object> messages { get; set; }
         public ValidateMessages validateMessages { get; set; }
     }

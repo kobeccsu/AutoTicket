@@ -98,10 +98,11 @@ namespace AutoTicket
                 button3_Click(sender, e);
 
             }
-            catch
+            catch(Exception ex)
             {
+                MessageBox.Show(ex.Message);
                 //CDNReset.GetCDN();
-                Form1_Load(sender, e);
+                //Form1_Load(sender, e);
             }
         }
 
