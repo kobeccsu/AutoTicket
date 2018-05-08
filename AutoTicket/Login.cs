@@ -134,8 +134,10 @@ namespace AutoTicket
             {
                 this.richTextBox1.Text += data["messages"].ToString() + Environment.NewLine;    
             }
+            TicketBiz.SendJsonpToSomeSite();
 
             TicketBiz.LoginFinalStep();
+            
         }
 
         /// <summary>

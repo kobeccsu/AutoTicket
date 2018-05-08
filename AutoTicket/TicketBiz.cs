@@ -92,7 +92,7 @@ namespace AutoTicket
         {
             var loginRes = HttpWebRequestExtension.PostWebContent(TrainUrlConstant.LoginPostForm, HttpWebRequestExtension._12306Cookies,
                               "username=" + userName + "&password=" + password
-                              + "&appid=otn"
+                              + "&appid=otn", PostParamSet.Normal, CookieStatus.ResponseSetCookie
                               );
             return loginRes;
         }
@@ -104,6 +104,11 @@ namespace AutoTicket
         {
             var finalLoginStep = HttpWebRequestExtension.PostWebContent(TrainUrlConstant.LoginSuccessFinal, HttpWebRequestExtension._12306Cookies,
                 "_json_att=");
+        }
+
+        public static void SendJsonpToSomeSite()
+        {
+            var result = HttpWebRequestExtension.PostWebContent(TrainUrlConstant.JSONP_UAMTK, HttpWebRequestExtension._12306Cookies, "appid=otn&_json_att=");
         }
 
 

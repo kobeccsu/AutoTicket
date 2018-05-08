@@ -145,6 +145,8 @@ namespace AutoTicket
                 //Util.ClassToField<QueryLeftNewDTO>(dt, row, item);
                 var arr = item.Split(new string[]{"|"},  StringSplitOptions.RemoveEmptyEntries);
                 //row[""]
+                row["train_no"] = arr[2];
+                row["station_train_code"] = arr[3];
                 row["secretStr"] = arr[0];
                 row["buttonTextInfo"] = arr[1];
                 dt.Rows.Add(row);
@@ -261,7 +263,7 @@ namespace AutoTicket
                 TicketBiz.train_date = this.dtpTrainDate.Value.ToUniversalTime().ToString();
                 TicketBiz.query_from_station_name = this.cmbstartStation.Text;
                 TicketBiz.query_to_station_name = this.cmbendStation.Text;
-                SetPassenger();
+                //SetPassenger();
                 button2_Click(sender, e);
             }
         }

@@ -197,19 +197,17 @@ namespace AutoTicket
                 {
                     continue;
                 }
-
+              
                 string value = response.Headers.Get(i);
-                foreach (var singleCookie in value.Split(','))
+                foreach (var singleCookie in Regex.Split(value, @",(?=\S)"))
                 {
-                    var path = singleCookie.Split(';')[1].Split('=')[1];
+                    //var pathString = singleCookie.Split(';')[1].Split('=')[1];
+                    Match pathMatch = Regex.Match(singleCookie, "(Path=[^,]*)(?=([,]|$))", RegexOptions.IgnoreCase);
+                    var path = pathMatch.Groups[2].ToString();
+
                     Match match = Regex.Match(singleCookie, "(.*?)=(.*?);");
                     if (match.Captures.Count == 0)
                         continue;
-                    
-                    //if(Util.GetAllCookies(_12306Cookies).Where(m=> m.Name == match.Groups[1].ToString()).Count() == 0)
-                    //{
-                    //if (!_12306Cookies.CookieContainsValueName(match.Groups[1].ToString()))
-                    //{
                     
                     // 为了保证没有重复 cookie
                     cookieList.Remove(match.Groups[1].ToString());
@@ -220,31 +218,6 @@ namespace AutoTicket
                             path,
                             request.Host.Split(':')[0])
                     );
-                        
-
-
-                        //Cookie ck = new Cookie(match.Groups[1].ToString(), match.Groups[2].ToString());
-                        //ck.Path = path;
-                        //ck.Domain = request.Host.Split(':')[0];
-                        //_12306Cookies.Add(new Uri("https://kyfw.12306.cn" + path), ck);
-                    //}
-                    //else
-                    //{
-                    //    // 还是不能直接操作 cookiecontainer 非常不方便
-                    //    CookieCollection cool = new CookieCollection();
-
-                    //}
-                    //}
-                    
-                    // 其实我这里静态变量已经记住了就可以了，你这里回不回发我 winform 都收不到
-                    //if(response.Cookies[match.Groups[1].ToString()] == null)
-                    //{ 
-                        //response.Cookies.Add(new Cookie(
-                        //    match.Groups[1].ToString(),
-                        //    match.Groups[2].ToString(),
-                        //    path,
-                        //    request.Host.Split(':')[0]));
-                    //}
                 }
             }
             _12306Cookies = new CookieContainer();
@@ -253,8 +226,6 @@ namespace AutoTicket
                 _12306Cookies.Add(new Uri("https://kyfw.12306.cn" + item.Path), item);
             }
         }
-
-
 
         /// <summary>
         /// 获取提交订票时所需要的 token
