@@ -195,8 +195,10 @@ namespace AutoTicket
         public const string TicketFinalResult = "https://kyfw.12306.cn/otn/confirmPassenger/resultOrderForDcQueue";
 
         /// <summary>
-        /// 看起来是个jsonp,
+        /// UAMTK
         /// </summary>
-        public const string JSONP_UAMTK = "https://kyfw.12306.cn/passport/web/auth/uamtk?callback=jQuery19105528735992852218_1525352684881";
+        public const string UAMTK = "https://kyfw.12306.cn/passport/web/auth/uamtk";
+
+        public const string UAMTK_Client = "https://kyfw.12306.cn/otn/uamauthclient";
     }
 }

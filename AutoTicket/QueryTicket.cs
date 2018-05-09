@@ -47,7 +47,7 @@ namespace AutoTicket
             var url = "https://kyfw.12306.cn/otn/resources/js/framework/station_name.js?station_version=1.9051";
             var loginRes = HttpWebRequestExtension.GetWebContent(url, HttpWebRequestExtension._12306Cookies);
             SetStation(loginRes);
-            SetPassengers();
+            //SetPassengers();
         }
 
         private void SetPassengers()
@@ -142,9 +142,9 @@ namespace AutoTicket
             foreach (var item in obj.data.result)
             {
                 DataRow row = dt.NewRow();
-                //Util.ClassToField<QueryLeftNewDTO>(dt, row, item);
+                
                 var arr = item.Split(new string[]{"|"},  StringSplitOptions.RemoveEmptyEntries);
-                //row[""]
+                
                 row["train_no"] = arr[2];
                 row["station_train_code"] = arr[3];
                 row["secretStr"] = arr[0];

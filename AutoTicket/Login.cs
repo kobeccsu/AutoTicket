@@ -134,8 +134,9 @@ namespace AutoTicket
             {
                 this.richTextBox1.Text += data["messages"].ToString() + Environment.NewLine;    
             }
-            TicketBiz.SendJsonpToSomeSite();
-
+            var uamtkreturn = TicketBiz.UAMTK();
+            dynamic result = JsonConvert.DeserializeObject(uamtkreturn);
+            TicketBiz.UAMTK_Client(result["newapptk"].ToString());
             TicketBiz.LoginFinalStep();
             
         }

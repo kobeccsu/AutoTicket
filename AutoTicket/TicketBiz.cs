@@ -106,9 +106,15 @@ namespace AutoTicket
                 "_json_att=");
         }
 
-        public static void SendJsonpToSomeSite()
+        public static string UAMTK()
         {
-            var result = HttpWebRequestExtension.PostWebContent(TrainUrlConstant.JSONP_UAMTK, HttpWebRequestExtension._12306Cookies, "appid=otn&_json_att=");
+            return HttpWebRequestExtension.PostWebContent(TrainUrlConstant.UAMTK, HttpWebRequestExtension._12306Cookies, "appid=otn&_json_att=");
+        }
+
+        public static void UAMTK_Client(string tk)
+        {
+            var result = HttpWebRequestExtension.PostWebContent(TrainUrlConstant.UAMTK_Client, HttpWebRequestExtension._12306Cookies, 
+                "tk=" + tk, PostParamSet.Normal, CookieStatus.ResponseSetCookie);
         }
 
 
